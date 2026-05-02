@@ -92,39 +92,48 @@ nav{
 }
 .hero-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.65) 100%);
+  background:linear-gradient(160deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.70) 100%);
 }
 .hero-content{
-  position:relative;z-index:2;text-align:center;padding:0 24px;max-width:960px;
+  position:relative;z-index:2;text-align:center;padding:0 32px;max-width:980px;
 }
+.hero-eyebrow{
+  display:inline-block;margin-bottom:28px;
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);font-weight:700;
+  border:1px solid rgba(252,185,0,0.4);border-radius:50px;padding:7px 20px;
+}
+#hero-eyebrow,#hero-title,#hero-sub,.hero-cta-group,.hero-badges{opacity:1}
 #hero-title{
-  font-family:'Roboto Slab',serif;font-size:clamp(56px,8.5vw,120px);
-  font-weight:900;color:var(--white);line-height:1.0;
-  letter-spacing:-2px;opacity:0;
-  text-shadow:0 4px 32px rgba(0,0,0,0.5);
+  font-family:'Roboto Slab',serif;font-size:clamp(60px,9vw,128px);
+  font-weight:900;color:var(--white);line-height:0.97;
+  letter-spacing:-3px;
+  text-shadow:0 6px 40px rgba(0,0,0,0.6);
 }
 #hero-title span{display:block}
+#hero-title .accent{color:var(--gold)}
 #hero-sub{
-  margin-top:24px;font-size:clamp(16px,2vw,21px);
-  color:rgba(255,255,255,0.88);font-weight:400;
-  letter-spacing:0.3px;line-height:1.7;opacity:0;
-  text-shadow:0 2px 12px rgba(0,0,0,0.6);
+  margin-top:28px;font-size:clamp(17px,2.2vw,22px);
+  color:rgba(255,255,255,0.90);font-weight:300;
+  letter-spacing:0.2px;line-height:1.75;
+  text-shadow:0 2px 16px rgba(0,0,0,0.7);
 }
-.hero-cta-group{margin-top:44px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0}
+.hero-cta-group{margin-top:48px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
 .pill-btn{
-  display:inline-block;padding:14px 36px;border-radius:50px;
+  display:inline-block;padding:16px 40px;border-radius:50px;
   text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
   transition:all 0.25s;
 }
-.pill-outline{border:2px solid var(--white);color:var(--white)}
-.pill-outline:hover{background:var(--white);color:var(--black)}
-.pill-fill{background:var(--red);color:var(--white);border:2px solid var(--red)}
-.pill-fill:hover{background:#b02020;border-color:#b02020}
+.pill-outline{border:2px solid rgba(255,255,255,0.9);color:var(--white);backdrop-filter:blur(4px)}
+.pill-outline:hover{background:var(--white);color:var(--black);border-color:var(--white)}
+.pill-fill{background:var(--red);color:var(--white);border:2px solid var(--red);box-shadow:0 4px 24px rgba(207,46,46,0.5)}
+.pill-fill:hover{background:#b02020;border-color:#b02020;box-shadow:0 6px 28px rgba(207,46,46,0.6)}
 
-.hero-badges{margin-top:36px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;opacity:0}
+.hero-badges{margin-top:40px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
 .hero-badge{
-  border:1.5px solid rgba(255,255,255,0.4);border-radius:50px;
-  padding:8px 22px;color:rgba(255,255,255,0.7);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  border:1.5px solid rgba(255,255,255,0.35);border-radius:50px;
+  padding:8px 22px;color:rgba(255,255,255,0.75);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  backdrop-filter:blur(4px);background:rgba(0,0,0,0.2);
 }
 .hero-badge.gold{border-color:var(--gold);color:var(--gold)}
 
@@ -463,19 +472,20 @@ footer{
     </svg>
 
     <div class="hero-content">
+      <span class="hero-eyebrow" id="hero-eyebrow">Late Night Done Right</span>
       <h1 id="hero-title">
         <span>Burgers, Wings &amp;</span>
-        <span>Fat Sandwiches.</span>
+        <span><span class="accent">Fat</span> Sandwiches.</span>
       </h1>
-      <p id="hero-sub">Dine in, take-out, and delivery.<br/>Open late — because cravings don't sleep.</p>
+      <p id="hero-sub">Dine in, take-out, and delivery — open late<br/>because cravings don't sleep.</p>
       <div class="hero-cta-group" id="hero-cta">
-        <a href="#" onclick="showPage('menu');return false" class="pill-btn pill-outline">See Menu</a>
-        <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="pill-btn pill-fill">Order Now</a>
+        <a href="#" onclick="showPage('menu');return false" class="pill-btn pill-fill">See the Menu</a>
+        <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="pill-btn pill-outline">Order Now</a>
       </div>
       <div class="hero-badges" id="hero-badges">
         <span class="hero-badge gold">As Seen on Shark Tank</span>
-        <span class="hero-badge">Late Night Done Right</span>
-        <span class="hero-badge">$5.99 Fat Stacks</span>
+        <span class="hero-badge">100% Angus Beef</span>
+        <span class="hero-badge">Open Late</span>
       </div>
     </div>
   </section>
@@ -1164,13 +1174,15 @@ function toggleMobile() {
 
 // ─── SCROLL ANIMATIONS ───
 document.addEventListener('DOMContentLoaded', () => {
+  if (!window.Motion) return;
   const { animate, inView } = window.Motion;
 
-  // Hero headline — word stagger on load
-  animate('#hero-title', { opacity: [0, 1], y: [40, 0] }, { duration: 0.7, ease: 'easeOut' });
-  animate('#hero-sub', { opacity: [0, 1], y: [30, 0] }, { duration: 0.6, delay: 0.4, ease: 'easeOut' });
-  animate('#hero-cta', { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.65, ease: 'easeOut' });
-  animate('#hero-badges', { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.85, ease: 'easeOut' });
+  // Hero — staggered entrance
+  animate('#hero-eyebrow', { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, ease: 'easeOut' });
+  animate('#hero-title', { opacity: [0, 1], y: [44, 0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
+  animate('#hero-sub', { opacity: [0, 1], y: [28, 0] }, { duration: 0.6, delay: 0.4, ease: 'easeOut' });
+  animate('#hero-cta', { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.62, ease: 'easeOut' });
+  animate('#hero-badges', { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.82, ease: 'easeOut' });
 
   // Eat block — slide from left
   inView('#eat-block', () => {
