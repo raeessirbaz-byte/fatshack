@@ -88,23 +88,29 @@ nav{
 .hero-bg{
   position:absolute;inset:0;
   background:url('https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/673b7b8d2f9c8fe0dc72fb69_DD%20Hero%2011.24%20sMALLER.avif') center/cover no-repeat;
-  filter:brightness(0.45);
+  filter:brightness(0.95);
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0.65) 100%);
 }
 .hero-content{
-  position:relative;z-index:2;text-align:center;padding:0 24px;max-width:900px;
+  position:relative;z-index:2;text-align:center;padding:0 24px;max-width:960px;
 }
 #hero-title{
-  font-family:'Roboto Slab',serif;font-size:clamp(52px,8vw,110px);
-  font-weight:900;color:var(--white);line-height:1.05;
-  letter-spacing:-1px;opacity:0;
+  font-family:'Roboto Slab',serif;font-size:clamp(56px,8.5vw,120px);
+  font-weight:900;color:var(--white);line-height:1.0;
+  letter-spacing:-2px;opacity:0;
+  text-shadow:0 4px 32px rgba(0,0,0,0.5);
 }
 #hero-title span{display:block}
 #hero-sub{
-  margin-top:28px;font-size:clamp(16px,2vw,20px);
-  color:rgba(255,255,255,0.72);font-weight:300;
-  letter-spacing:0.5px;line-height:1.7;opacity:0;
+  margin-top:24px;font-size:clamp(16px,2vw,21px);
+  color:rgba(255,255,255,0.88);font-weight:400;
+  letter-spacing:0.3px;line-height:1.7;opacity:0;
+  text-shadow:0 2px 12px rgba(0,0,0,0.6);
 }
-.hero-cta-group{margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0}
+.hero-cta-group{margin-top:44px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0}
 .pill-btn{
   display:inline-block;padding:14px 36px;border-radius:50px;
   text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
@@ -333,11 +339,17 @@ footer{
 .menu-section-desc{color:var(--gray);font-size:16px;margin-top:12px;line-height:1.7;max-width:640px}
 .menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 .menu-card{
-  background:var(--white);border-radius:16px;padding:28px;
+  background:var(--white);border-radius:16px;overflow:hidden;
   border:1.5px solid rgba(0,0,0,0.08);transition:all 0.25s;position:relative;
 }
 .menu-card:hover{border-color:var(--black);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
 .menu-card.iconic{border-color:var(--red);background:rgba(207,46,46,0.03)}
+.menu-card-img{
+  width:100%;height:210px;object-fit:cover;display:block;
+  transition:transform 0.4s;
+}
+.menu-card:hover .menu-card-img{transform:scale(1.04)}
+.menu-card-body{padding:22px 24px 24px}
 .iconic-label{
   position:absolute;top:-12px;left:24px;
   background:var(--red);color:var(--white);font-size:10px;font-weight:700;
@@ -436,6 +448,7 @@ footer{
   <!-- HERO -->
   <section class="hero">
     <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
 
     <!-- Rotating badge SVG -->
     <svg class="spin-badge" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
@@ -654,60 +667,84 @@ footer{
       <div class="menu-grid">
         <div class="menu-card iconic">
           <div class="iconic-label">⭐ The Iconic</div>
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Shack™</span>
-            <span class="menu-card-price">$14.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4883ebbc520ddf5b84a5_8%20-%20Fat%20Shack%20-%20Cut-min.avif" alt="Fat Shack sandwich"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Shack™</span>
+              <span class="menu-card-price">$14.99</span>
+            </div>
+            <p class="menu-card-desc">Cheesesteak, chicken fingers, jalapeño poppers, mozzarella sticks, fries, honey-jalapeño mustard.</p>
           </div>
-          <p class="menu-card-desc">Cheesesteak, chicken fingers, jalapeño poppers, mozzarella sticks, fries, honey-jalapeño mustard.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Andy™</span>
-            <span class="menu-card-price">$13.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b488147f300e2750c090c_1%20-%20Fat%20Andy.avif" alt="Fat Andy"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Andy™</span>
+              <span class="menu-card-price">$13.99</span>
+            </div>
+            <p class="menu-card-desc">Fried pickles, mozzarella sticks, onion rings, fries, ranch.</p>
           </div>
-          <p class="menu-card-desc">Fried pickles, mozzarella sticks, onion rings, fries, ranch.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Bronco™</span>
-            <span class="menu-card-price">$13.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4883b43ed97d29be7d0c_2%20-%20Fat%20Bronco%20-%20Cut-min.avif" alt="Fat Bronco"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Bronco™</span>
+              <span class="menu-card-price">$13.99</span>
+            </div>
+            <p class="menu-card-desc">Chicken fingers, mozzarella sticks, fries, marinara.</p>
           </div>
-          <p class="menu-card-desc">Chicken fingers, mozzarella sticks, fries, marinara.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Chance™</span>
-            <span class="menu-card-price">$14.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b488313c4b1325449292e_3%20-%20Fat%20Chance%20-%20Cut-min.avif" alt="Fat Chance"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Chance™</span>
+              <span class="menu-card-price">$14.99</span>
+            </div>
+            <p class="menu-card-desc">Jalapeño poppers, cheesesteak, chicken fingers, fries, buffalo ranch.</p>
           </div>
-          <p class="menu-card-desc">Jalapeño poppers, cheesesteak, chicken fingers, fries, buffalo ranch.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Cow™</span>
-            <span class="menu-card-price">$13.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b488185bdcdf52931dd89_4%20-%20Fat%20Cow%20-%20Cut-min.avif" alt="Fat Cow"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Cow™</span>
+              <span class="menu-card-price">$13.99</span>
+            </div>
+            <p class="menu-card-desc">Mac n' cheese, bacon, mozzarella sticks, fries, buffalo ranch.</p>
           </div>
-          <p class="menu-card-desc">Mac n' cheese, bacon, mozzarella sticks, fries, buffalo ranch.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Doobie™</span>
-            <span class="menu-card-price">$13.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4883c992f9e1fb812acb_5%20-%20Fat%20Doobie%20-%20Cut-min.avif" alt="Fat Doobie"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Doobie™</span>
+              <span class="menu-card-price">$13.99</span>
+            </div>
+            <p class="menu-card-desc">Chicken fingers, fries, onion rings, mozzarella sticks, honey mustard.</p>
           </div>
-          <p class="menu-card-desc">Chicken fingers, fries, onion rings, mozzarella sticks, honey mustard.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Jersey™</span>
-            <span class="menu-card-price">$14.49</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b48830aada8097fba1346_6%20-%20Fat%20Jersey%20-%20Cut-min.avif" alt="Fat Jersey"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Jersey™</span>
+              <span class="menu-card-price">$14.49</span>
+            </div>
+            <p class="menu-card-desc">Cheesesteak, chicken fingers, mozzarella sticks, fries, honey mustard.</p>
           </div>
-          <p class="menu-card-desc">Cheesesteak, chicken fingers, mozzarella sticks, fries, honey mustard.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fat Maverick™</span>
-            <span class="menu-card-price">$13.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4882a8fd76e997566b85_7%20-%20Fat%20Maverick%20-%20Cut-min.avif" alt="Fat Maverick"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fat Maverick™</span>
+              <span class="menu-card-price">$13.99</span>
+            </div>
+            <p class="menu-card-desc">Mac n' cheese, chicken fingers, fries, BBQ sauce.</p>
           </div>
-          <p class="menu-card-desc">Mac n' cheese, chicken fingers, fries, BBQ sauce.</p>
         </div>
       </div>
     </div>
@@ -721,42 +758,57 @@ footer{
       </div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">The Single</span>
-            <span class="menu-card-price">$9.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4e70a8fd76e9975b8212_1-Single-min.avif" alt="The Single"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">The Single</span>
+              <span class="menu-card-price">$9.99</span>
+            </div>
+            <p class="menu-card-desc">Single quarter-pound Angus patty. The classic.</p>
+            <span class="menu-card-tag">¼ lb patty</span>
           </div>
-          <p class="menu-card-desc">Single quarter-pound Angus patty. The classic.</p>
-          <span class="menu-card-tag">¼ lb patty</span>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">The Classic</span>
-            <span class="menu-card-price">$12.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4e705b83ba89df1bf4bb_2-Classic-min.avif" alt="The Classic"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">The Classic</span>
+              <span class="menu-card-price">$12.99</span>
+            </div>
+            <p class="menu-card-desc">Double quarter-pound Angus patties. Serious business.</p>
+            <span class="menu-card-tag">2×¼ lb patties</span>
           </div>
-          <p class="menu-card-desc">Double quarter-pound Angus patties. Serious business.</p>
-          <span class="menu-card-tag">2×¼ lb patties</span>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">The Supreme</span>
-            <span class="menu-card-price">$15.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4e7085bdcdf52936f1ec_3-Supreme-min.avif" alt="The Supreme"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">The Supreme</span>
+              <span class="menu-card-price">$15.99</span>
+            </div>
+            <p class="menu-card-desc">Triple quarter-pound Angus patties. No explanation needed.</p>
+            <span class="menu-card-tag">3×¼ lb patties</span>
           </div>
-          <p class="menu-card-desc">Triple quarter-pound Angus patties. No explanation needed.</p>
-          <span class="menu-card-tag">3×¼ lb patties</span>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">BBQ Bacon</span>
-            <span class="menu-card-price">$13.49</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4e705b83ba89df1bf4bb_2-Classic-min.avif" alt="BBQ Bacon Burger"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">BBQ Bacon</span>
+              <span class="menu-card-price">$13.49</span>
+            </div>
+            <p class="menu-card-desc">Double smash patties, crispy bacon, BBQ sauce, cheddar.</p>
           </div>
-          <p class="menu-card-desc">Double smash patties, crispy bacon, BBQ sauce, cheddar.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Mushroom Swiss</span>
-            <span class="menu-card-price">$13.49</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4e7085bdcdf52936f1ec_3-Supreme-min.avif" alt="Mushroom Swiss"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Mushroom Swiss</span>
+              <span class="menu-card-price">$13.49</span>
+            </div>
+            <p class="menu-card-desc">Double patties, sautéed mushrooms, Swiss cheese, garlic aioli.</p>
           </div>
-          <p class="menu-card-desc">Double patties, sautéed mushrooms, Swiss cheese, garlic aioli.</p>
         </div>
       </div>
     </div>
@@ -770,39 +822,54 @@ footer{
       </div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Buffalo Wings (6)</span>
-            <span class="menu-card-price">$10.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b52512943e78fa3d0e6d6_Bone-In%20Wings-min.avif" alt="Bone-In Wings"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Buffalo Wings (6)</span>
+              <span class="menu-card-price">$10.99</span>
+            </div>
+            <p class="menu-card-desc">Traditional bone-in wings tossed in your choice of sauce.</p>
           </div>
-          <p class="menu-card-desc">Traditional bone-in wings tossed in your choice of sauce.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Buffalo Wings (10)</span>
-            <span class="menu-card-price">$16.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b52512943e78fa3d0e6d6_Bone-In%20Wings-min.avif" alt="Wings 10"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Buffalo Wings (10)</span>
+              <span class="menu-card-price">$16.99</span>
+            </div>
+            <p class="menu-card-desc">Go big. Ten bone-in wings, your sauce, your rules.</p>
           </div>
-          <p class="menu-card-desc">Go big. Ten bone-in wings, your sauce, your rules.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Buffalo Wings (15)</span>
-            <span class="menu-card-price">$22.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b52512943e78fa3d0e6d6_Bone-In%20Wings-min.avif" alt="Wings 15"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Buffalo Wings (15)</span>
+              <span class="menu-card-price">$22.99</span>
+            </div>
+            <p class="menu-card-desc">Fifteen wings. Feeding the crew.</p>
           </div>
-          <p class="menu-card-desc">Fifteen wings. Feeding the crew.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Boneless Fingers (6)</span>
-            <span class="menu-card-price">$10.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b5251624d5a8d0d08c56d_Boneless%20Fingers-min.avif" alt="Boneless Fingers"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Boneless Fingers (6)</span>
+              <span class="menu-card-price">$10.99</span>
+            </div>
+            <p class="menu-card-desc">Six crispy boneless chicken fingers, sauced up.</p>
           </div>
-          <p class="menu-card-desc">Six crispy boneless chicken fingers, sauced up.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Boneless Fingers (12)</span>
-            <span class="menu-card-price">$19.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b5251624d5a8d0d08c56d_Boneless%20Fingers-min.avif" alt="Boneless Fingers 12"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Boneless Fingers (12)</span>
+              <span class="menu-card-price">$19.99</span>
+            </div>
+            <p class="menu-card-desc">Twelve boneless fingers. The full commitment.</p>
           </div>
-          <p class="menu-card-desc">Twelve boneless fingers. The full commitment.</p>
         </div>
       </div>
     </div>
@@ -815,53 +882,74 @@ footer{
       </div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Loaded Fries</span>
-            <span class="menu-card-price">$7.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b429294164ceb721f7222_1-French%20Fries-min.avif" alt="Loaded Fries"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Loaded Fries</span>
+              <span class="menu-card-price">$7.99</span>
+            </div>
+            <p class="menu-card-desc">Crispy fries loaded with cheese, bacon bits, and sour cream.</p>
           </div>
-          <p class="menu-card-desc">Crispy fries loaded with cheese, bacon bits, and sour cream.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Onion Rings</span>
-            <span class="menu-card-price">$5.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b429292a91eb222050aad_3-Onion%20Rings-min.avif" alt="Onion Rings"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Onion Rings</span>
+              <span class="menu-card-price">$5.99</span>
+            </div>
+            <p class="menu-card-desc">Thick-cut, golden, crunchy. With your choice of dip.</p>
           </div>
-          <p class="menu-card-desc">Thick-cut, golden, crunchy. With your choice of dip.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Mozzarella Sticks</span>
-            <span class="menu-card-price">$6.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b429273c10cc6dcfb5a6b_4-Mozzarella%20Sticks-min.avif" alt="Mozzarella Sticks"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Mozzarella Sticks</span>
+              <span class="menu-card-price">$6.99</span>
+            </div>
+            <p class="menu-card-desc">Pull-apart cheese sticks served with marinara.</p>
           </div>
-          <p class="menu-card-desc">Pull-apart cheese sticks served with marinara.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Mac N' Cheese Bites</span>
-            <span class="menu-card-price">$6.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4291ee3cbf866b28d26f_6-Mac%20N_%20Cheese%20Bites-min.avif" alt="Mac N Cheese Bites"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Mac N' Cheese Bites</span>
+              <span class="menu-card-price">$6.99</span>
+            </div>
+            <p class="menu-card-desc">Creamy mac n' cheese fried to golden perfection. Served with buffalo ranch.</p>
           </div>
-          <p class="menu-card-desc">Creamy mac n' cheese fried to golden perfection. Served with buffalo ranch.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Jalapeño Poppers</span>
-            <span class="menu-card-price">$6.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b42926da19782f2746eca_5-Jalape%CE%B1%E2%95%95%C3%A4o%20Poppers-min.avif" alt="Jalapeño Poppers"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Jalapeño Poppers</span>
+              <span class="menu-card-price">$6.99</span>
+            </div>
+            <p class="menu-card-desc">Cream cheese-stuffed jalapeños, battered and fried. With ranch.</p>
           </div>
-          <p class="menu-card-desc">Cream cheese-stuffed jalapeños, battered and fried. With ranch.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fried Pickles</span>
-            <span class="menu-card-price">$5.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4292f35a242da1480e05_7-Fried%20Pickles-min.avif" alt="Fried Pickles"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fried Pickles</span>
+              <span class="menu-card-price">$5.99</span>
+            </div>
+            <p class="menu-card-desc">Tangy dill pickles battered and fried. Served with ranch.</p>
           </div>
-          <p class="menu-card-desc">Tangy dill pickles battered and fried. Served with ranch.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Munchie Madness Platter</span>
-            <span class="menu-card-price">$19.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4292b77bdd9138447a5e_10-Munchie%20Madness%20Platter-min.avif" alt="Munchie Madness Platter"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Munchie Madness Platter</span>
+              <span class="menu-card-price">$19.99</span>
+            </div>
+            <p class="menu-card-desc">Chicken fingers, mozzarella sticks, onion rings, mac n' cheese bites with all sauces. Share if you dare.</p>
           </div>
-          <p class="menu-card-desc">Chicken fingers, mozzarella sticks, onion rings, mac n' cheese bites with all sauces. Share if you dare.</p>
         </div>
       </div>
     </div>
@@ -875,46 +963,64 @@ footer{
       </div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Deep-Fried Oreos™ (3)</span>
-            <span class="menu-card-price">$5.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b53d957cff179c7562f98_1-%20Deep-Fried%20Oreos-min.avif" alt="Deep-Fried Oreos"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Deep-Fried Oreos™ (3)</span>
+              <span class="menu-card-price">$5.99</span>
+            </div>
+            <p class="menu-card-desc">The original. Warm, gooey Oreos in crispy batter, dusted with powdered sugar.</p>
           </div>
-          <p class="menu-card-desc">The original. Warm, gooey Oreos in crispy batter, dusted with powdered sugar.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Deep-Fried Oreos™ (5)</span>
-            <span class="menu-card-price">$7.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b53d957cff179c7562f98_1-%20Deep-Fried%20Oreos-min.avif" alt="Deep-Fried Oreos 5"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Deep-Fried Oreos™ (5)</span>
+              <span class="menu-card-price">$7.99</span>
+            </div>
+            <p class="menu-card-desc">Five is always better than three.</p>
           </div>
-          <p class="menu-card-desc">Five is always better than three.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fried Cheesecake Bites (3)</span>
-            <span class="menu-card-price">$6.49</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b53d9dd23f7a470ca6171_2-%20Cheesecake%20Bites-min.avif" alt="Cheesecake Bites"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fried Cheesecake Bites (3)</span>
+              <span class="menu-card-price">$6.49</span>
+            </div>
+            <p class="menu-card-desc">Creamy cheesecake bites fried golden. Powdered sugar finish.</p>
           </div>
-          <p class="menu-card-desc">Creamy cheesecake bites fried golden. Powdered sugar finish.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fried Cheesecake Bites (5)</span>
-            <span class="menu-card-price">$8.49</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b53d9dd23f7a470ca6171_2-%20Cheesecake%20Bites-min.avif" alt="Cheesecake Bites 5"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fried Cheesecake Bites (5)</span>
+              <span class="menu-card-price">$8.49</span>
+            </div>
+            <p class="menu-card-desc">Five bites of pure indulgence.</p>
           </div>
-          <p class="menu-card-desc">Five bites of pure indulgence.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Funnel Cake Bites (6)</span>
-            <span class="menu-card-price">$5.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b53d94a7eaf5ad0876ff4_3-%20Funnel%20Cake%20Bites-min.avif" alt="Funnel Cake Bites"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Funnel Cake Bites (6)</span>
+              <span class="menu-card-price">$5.99</span>
+            </div>
+            <p class="menu-card-desc">Crispy carnival-style funnel cake bites. Powdered sugar, chocolate or strawberry dip.</p>
           </div>
-          <p class="menu-card-desc">Crispy carnival-style funnel cake bites. Powdered sugar, chocolate or strawberry dip.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fried Twinkies</span>
-            <span class="menu-card-price">$6.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b53d957cff179c7562f98_1-%20Deep-Fried%20Oreos-min.avif" alt="Fried Twinkies"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fried Twinkies</span>
+              <span class="menu-card-price">$6.99</span>
+            </div>
+            <p class="menu-card-desc">The iconic Twinkie, battered and fried. A Fat Shack classic.</p>
           </div>
-          <p class="menu-card-desc">The iconic Twinkie, battered and fried. A Fat Shack classic.</p>
         </div>
       </div>
     </div>
@@ -927,46 +1033,64 @@ footer{
       </div>
       <div class="menu-grid">
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">OREO™ Shake</span>
-            <span class="menu-card-price">$6.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b55118c610b58e8e98294_1-Oreo%20Shake-min.avif" alt="OREO Shake"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">OREO™ Shake</span>
+              <span class="menu-card-price">$6.99</span>
+            </div>
+            <p class="menu-card-desc">Thick blended milkshake with Oreo cookies. The perfect closer.</p>
           </div>
-          <p class="menu-card-desc">Thick blended milkshake with Oreo cookies. The perfect closer.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Vanilla Shake</span>
-            <span class="menu-card-price">$5.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b5511f4c1df8df926c6dc_2-%20Vanilla%20Shake-min.avif" alt="Vanilla Shake"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Vanilla Shake</span>
+              <span class="menu-card-price">$5.99</span>
+            </div>
+            <p class="menu-card-desc">Classic, creamy, cold vanilla milkshake.</p>
           </div>
-          <p class="menu-card-desc">Classic, creamy, cold vanilla milkshake.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Chocolate Shake</span>
-            <span class="menu-card-price">$5.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b5513f921e1758d271873_3-%20Chocolate%20Shake-min.avif" alt="Chocolate Shake"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Chocolate Shake</span>
+              <span class="menu-card-price">$5.99</span>
+            </div>
+            <p class="menu-card-desc">Rich, thick chocolate shake made the right way.</p>
           </div>
-          <p class="menu-card-desc">Rich, thick chocolate shake made the right way.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Strawberry Shake</span>
-            <span class="menu-card-price">$5.99</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b55136a9ebbe8660458e8_4-Strawberry%20Shake-min.avif" alt="Strawberry Shake"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Strawberry Shake</span>
+              <span class="menu-card-price">$5.99</span>
+            </div>
+            <p class="menu-card-desc">Fresh strawberry milkshake. Sweet, fruity, thick.</p>
           </div>
-          <p class="menu-card-desc">Fresh strawberry milkshake. Sweet, fruity, thick.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Lemonade</span>
-            <span class="menu-card-price">$3.49</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b5511f4c1df8df926c6dc_2-%20Vanilla%20Shake-min.avif" alt="Lemonade"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Lemonade</span>
+              <span class="menu-card-price">$3.49</span>
+            </div>
+            <p class="menu-card-desc">Fresh-squeezed style lemonade. Regular or pink.</p>
           </div>
-          <p class="menu-card-desc">Fresh-squeezed style lemonade. Regular or pink.</p>
         </div>
         <div class="menu-card">
-          <div class="menu-card-top">
-            <span class="menu-card-name">Fountain Soda</span>
-            <span class="menu-card-price">$2.49</span>
+          <img class="menu-card-img" src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b55118c610b58e8e98294_1-Oreo%20Shake-min.avif" alt="Fountain Soda"/>
+          <div class="menu-card-body">
+            <div class="menu-card-top">
+              <span class="menu-card-name">Fountain Soda</span>
+              <span class="menu-card-price">$2.49</span>
+            </div>
+            <p class="menu-card-desc">Pepsi, Diet Pepsi, Mountain Dew, Sierra Mist, and more.</p>
           </div>
-          <p class="menu-card-desc">Pepsi, Diet Pepsi, Mountain Dew, Sierra Mist, and more.</p>
         </div>
       </div>
     </div>
