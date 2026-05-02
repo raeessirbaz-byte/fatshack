@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Fat Shack — Late Night Done Right</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Slab:wght@300;400;700;900&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#231F20;
+  --white:#FFFFFF;
+  --cream:#f5f0e8;
+  --gold:#fcb900;
+  --red:#cf2e2e;
+  --gray:#6b6b6b;
+  --dark:#1a1a1a;
+  --mid:#2a2a2a;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Roboto',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden}
+
+/* ─── NAV ─── */
+nav{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 60px;
+  background:rgba(26,26,26,0.96);
+  backdrop-filter:blur(8px);
+  transition:background 0.3s;
+}
+.nav-left,.nav-right{display:flex;align-items:center;gap:36px}
+.nav-left a,.nav-right a{
+  color:var(--white);text-decoration:none;font-size:13px;
+  font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+  opacity:0.85;transition:opacity 0.2s;
+}
+.nav-left a:hover,.nav-right a:hover{opacity:1}
+.nav-center img{height:52px;width:auto}
+.nav-order-btn{
+  background:var(--red);color:var(--white)!important;
+  padding:10px 24px;border-radius:50px;opacity:1!important;
+  font-size:12px!important;letter-spacing:2px!important;
+  transition:background 0.2s!important;
+}
+.nav-order-btn:hover{background:#b02020!important}
+.nav-active{border-bottom:2px solid var(--gold);padding-bottom:2px}
+
+/* ─── HAMBURGER ─── */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{width:26px;height:2px;background:var(--white);border-radius:2px;transition:all 0.3s}
+
+/* ─── MOBILE MENU ─── */
+.mobile-menu{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:var(--dark);z-index:2000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  transform:translateY(-100%);transition:transform 0.4s cubic-bezier(0.77,0,0.175,1);
+}
+.mobile-menu.open{transform:translateY(0)}
+.mobile-menu a{
+  color:var(--white);text-decoration:none;font-size:28px;
+  font-family:'Roboto Slab',serif;font-weight:700;letter-spacing:2px;
+  text-transform:lowercase;opacity:0.9;
+}
+.mobile-menu .close-btn{
+  position:absolute;top:28px;right:32px;background:none;border:none;
+  color:var(--white);font-size:32px;cursor:pointer;
+}
+.mobile-order-btn{
+  background:var(--red);color:var(--white)!important;
+  padding:14px 40px!important;border-radius:50px;font-size:16px!important;
+  margin-top:12px;
+}
+
+/* ─── PAGES ─── */
+.page{display:none}
+.page.active{display:block}
+
+/* ─── HERO ─── */
+.hero{
+  position:relative;height:100vh;min-height:600px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;background:var(--dark);
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:url('https://jfvegancafe.com/wp-content/uploads/2025/custom/falafel4.jpg') center/cover no-repeat;
+  filter:brightness(0.35);
+}
+.hero-content{
+  position:relative;z-index:2;text-align:center;padding:0 24px;max-width:900px;
+}
+#hero-title{
+  font-family:'Roboto Slab',serif;font-size:clamp(52px,8vw,110px);
+  font-weight:900;color:var(--white);line-height:1.05;
+  letter-spacing:-1px;opacity:0;
+}
+#hero-title span{display:block}
+#hero-sub{
+  margin-top:28px;font-size:clamp(16px,2vw,20px);
+  color:rgba(255,255,255,0.72);font-weight:300;
+  letter-spacing:0.5px;line-height:1.7;opacity:0;
+}
+.hero-cta-group{margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;opacity:0}
+.pill-btn{
+  display:inline-block;padding:14px 36px;border-radius:50px;
+  text-decoration:none;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  transition:all 0.25s;
+}
+.pill-outline{border:2px solid var(--white);color:var(--white)}
+.pill-outline:hover{background:var(--white);color:var(--black)}
+.pill-fill{background:var(--red);color:var(--white);border:2px solid var(--red)}
+.pill-fill:hover{background:#b02020;border-color:#b02020}
+
+.hero-badges{margin-top:36px;display:flex;gap:20px;justify-content:center;flex-wrap:wrap;opacity:0}
+.hero-badge{
+  border:1.5px solid rgba(255,255,255,0.4);border-radius:50px;
+  padding:8px 22px;color:rgba(255,255,255,0.7);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+}
+.hero-badge.gold{border-color:var(--gold);color:var(--gold)}
+
+/* rotating badge */
+.spin-badge{
+  position:absolute;right:5%;top:50%;transform:translateY(-50%);
+  width:140px;height:140px;animation:rotateBadge 12s linear infinite;
+  opacity:0.6;
+}
+@keyframes rotateBadge{from{transform:translateY(-50%) rotate(0deg)}to{transform:translateY(-50%) rotate(360deg)}}
+
+/* ─── DISH ROTATOR ─── */
+.dish-rotator{
+  background:var(--black);padding:28px 0;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,0.08);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.dish-track{
+  display:flex;gap:48px;
+  animation:scrollTrack 20s linear infinite;
+  width:max-content;
+}
+.dish-track:hover{animation-play-state:paused}
+.dish-item{
+  color:var(--white);font-family:'Roboto Slab',serif;
+  font-size:22px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  white-space:nowrap;display:flex;align-items:center;gap:16px;
+}
+.dish-item::after{content:'✦';color:var(--gold);font-size:14px}
+@keyframes scrollTrack{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ─── EAT / SIP ─── */
+.eat-sip{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
+.eat-block,.sip-block{
+  position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;padding:60px 56px;
+}
+.eat-block{background:#1a1a1a}
+.sip-block{background:#0f0f0f}
+.eat-bg{
+  position:absolute;inset:0;
+  background:url('https://jfvegancafe.com/wp-content/uploads/2024/10/f2.jpg') center/cover no-repeat;
+  opacity:0.45;transition:opacity 0.4s;
+}
+.sip-bg{
+  position:absolute;inset:0;
+  background:url('https://jfvegancafe.com/wp-content/uploads/2024/10/sip-bg.jpg') center/cover no-repeat;
+  opacity:0.45;transition:opacity 0.4s;
+}
+.eat-block:hover .eat-bg,.sip-block:hover .sip-bg{opacity:0.6}
+.es-content{position:relative;z-index:2}
+.es-label{
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:14px;display:block;
+}
+.es-title{
+  font-family:'Roboto Slab',serif;font-size:clamp(40px,5vw,72px);
+  font-weight:900;color:var(--white);line-height:1;margin-bottom:20px;
+}
+.es-body{color:rgba(255,255,255,0.7);font-size:16px;line-height:1.8;max-width:340px;margin-bottom:28px}
+
+/* ─── GALLERY ─── */
+.gallery-section{padding:80px 0;background:var(--cream)}
+.gallery-header{text-align:center;padding:0 24px 56px}
+.section-label{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gray);font-weight:700;margin-bottom:14px;display:block}
+.section-title{font-family:'Roboto Slab',serif;font-size:clamp(36px,5vw,64px);font-weight:900;color:var(--black);line-height:1.1}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:auto;
+  gap:6px;padding:0 6px;
+}
+.gallery-item{overflow:hidden;position:relative;background:#ddd}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s}
+.gallery-item:hover img{transform:scale(1.05)}
+.gallery-item.tall{grid-row:span 2}
+.gallery-item.wide{grid-column:span 2}
+.gallery-item{height:260px}
+.gallery-item.tall{height:526px}
+.gallery-footer{text-align:center;padding:52px 24px 0}
+.gallery-ig-btn{
+  display:inline-flex;align-items:center;gap:10px;
+  border:2px solid var(--black);border-radius:50px;
+  padding:14px 36px;text-decoration:none;
+  font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--black);
+  transition:all 0.25s;
+}
+.gallery-ig-btn:hover{background:var(--black);color:var(--white)}
+
+/* ─── STATEMENT ─── */
+.statement{
+  background:var(--black);padding:120px 60px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.statement-bg-left{
+  position:absolute;left:-40px;top:50%;transform:translateY(-50%);
+  width:220px;opacity:0.12;
+  background:url('https://jfvegancafe.com/wp-content/uploads/2024/04/fork-bg.png') center/contain no-repeat;
+  height:400px;
+}
+.statement-bg-right{
+  position:absolute;right:-40px;top:50%;transform:translateY(-50%);
+  width:220px;opacity:0.12;
+  background:url('https://jfvegancafe.com/wp-content/uploads/2024/04/fork-bg2.png') center/contain no-repeat;
+  height:400px;
+}
+.statement-title{
+  font-family:'Roboto Slab',serif;
+  font-size:clamp(40px,7vw,96px);font-weight:900;
+  color:var(--white);line-height:1.05;text-transform:lowercase;
+  letter-spacing:-1px;position:relative;z-index:2;
+}
+.statement-title span{color:var(--gold)}
+.statement-sub{
+  margin-top:24px;font-size:18px;color:rgba(255,255,255,0.6);
+  font-weight:300;letter-spacing:1px;position:relative;z-index:2;
+}
+
+/* ─── LOCATIONS ─── */
+.locations-section{padding:100px 60px;background:var(--white)}
+.locations-header{text-align:center;margin-bottom:60px}
+.location-scroll{
+  display:flex;gap:16px;overflow-x:auto;padding-bottom:20px;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.location-scroll::-webkit-scrollbar{display:none}
+.loc-card{
+  flex:0 0 auto;border:2px solid var(--black);border-radius:16px;
+  padding:28px 32px;text-align:center;min-width:160px;cursor:pointer;
+  transition:all 0.25s;
+}
+.loc-card:hover{background:var(--black);color:var(--white)}
+.loc-card:hover .loc-name{color:var(--white)}
+.loc-state{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:6px;display:block}
+.loc-name{font-family:'Roboto Slab',serif;font-size:20px;font-weight:700}
+
+/* ─── EMAIL BAND ─── */
+.email-band{background:var(--black);padding:80px 60px;text-align:center}
+.email-title{font-family:'Roboto Slab',serif;font-size:clamp(28px,4vw,52px);font-weight:900;color:var(--white);margin-bottom:12px}
+.email-sub{color:rgba(255,255,255,0.6);font-size:16px;margin-bottom:40px;line-height:1.7}
+.email-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:600px;margin:0 auto}
+.email-form input,.email-form select{
+  padding:14px 20px;border:none;border-radius:50px;
+  font-size:14px;font-family:'Roboto',sans-serif;
+  background:rgba(255,255,255,0.1);color:var(--white);
+  border:1.5px solid rgba(255,255,255,0.2);outline:none;min-width:200px;
+  transition:border-color 0.2s;
+}
+.email-form input::placeholder{color:rgba(255,255,255,0.45)}
+.email-form input:focus,.email-form select:focus{border-color:var(--gold)}
+.email-form select option{background:var(--dark);color:var(--white)}
+.email-submit{
+  padding:14px 32px;border-radius:50px;border:none;cursor:pointer;
+  background:var(--gold);color:var(--black);font-weight:700;font-size:13px;
+  letter-spacing:1.5px;text-transform:uppercase;transition:background 0.2s;
+}
+.email-submit:hover{background:#e0a600}
+
+/* ─── FOOTER ─── */
+footer{
+  background:var(--dark);padding:80px 60px 40px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:48px;margin-bottom:60px}
+.footer-brand img{height:56px;margin-bottom:16px}
+.footer-tagline{color:rgba(255,255,255,0.5);font-size:12px;letter-spacing:3px;text-transform:uppercase}
+.footer-nav h4{color:var(--white);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
+.footer-nav a{display:block;color:rgba(255,255,255,0.6);text-decoration:none;font-size:15px;margin-bottom:10px;transition:color 0.2s}
+.footer-nav a:hover{color:var(--white)}
+.footer-right h4{color:var(--white);font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px}
+.footer-hours{color:rgba(255,255,255,0.6);font-size:15px;line-height:2;margin-bottom:28px}
+.social-links{display:flex;gap:16px}
+.social-link{
+  width:40px;height:40px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.25);
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,0.7);text-decoration:none;font-size:16px;
+  transition:all 0.2s;
+}
+.social-link:hover{border-color:var(--gold);color:var(--gold)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:gap}
+.footer-copy{color:rgba(255,255,255,0.3);font-size:13px}
+.footer-email{color:rgba(255,255,255,0.4);font-size:13px;text-decoration:none}
+.footer-email:hover{color:var(--gold)}
+
+/* ─── MENU PAGE HERO ─── */
+.menu-hero{
+  background:var(--dark);padding:160px 60px 100px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.menu-hero-bg{
+  position:absolute;inset:0;
+  background:url('https://jfvegancafe.com/wp-content/uploads/2025/custom/falafel3.jpg') center/cover;
+  opacity:0.2;
+}
+.menu-hero-title{
+  font-family:'Roboto Slab',serif;font-size:clamp(52px,8vw,100px);
+  font-weight:900;color:var(--white);position:relative;z-index:2;line-height:1;
+}
+.menu-hero-sub{
+  margin-top:20px;color:rgba(255,255,255,0.65);font-size:18px;
+  position:relative;z-index:2;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto;
+}
+
+/* ─── MENU SECTIONS ─── */
+.menu-page-content{background:var(--cream);padding:80px 0 0}
+.menu-section{padding:60px 80px;border-bottom:1px solid rgba(0,0,0,0.08)}
+.menu-section:nth-child(even){background:var(--white)}
+.menu-section-header{margin-bottom:48px}
+.menu-section-label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:10px;display:block}
+.menu-section-title{font-family:'Roboto Slab',serif;font-size:clamp(32px,4vw,54px);font-weight:900;color:var(--black);line-height:1}
+.menu-section-desc{color:var(--gray);font-size:16px;margin-top:12px;line-height:1.7;max-width:640px}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.menu-card{
+  background:var(--white);border-radius:16px;padding:28px;
+  border:1.5px solid rgba(0,0,0,0.08);transition:all 0.25s;position:relative;
+}
+.menu-card:hover{border-color:var(--black);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.1)}
+.menu-card.iconic{border-color:var(--red);background:rgba(207,46,46,0.03)}
+.iconic-label{
+  position:absolute;top:-12px;left:24px;
+  background:var(--red);color:var(--white);font-size:10px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:50px;
+}
+.menu-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.menu-card-name{font-family:'Roboto Slab',serif;font-size:20px;font-weight:700;line-height:1.2;max-width:75%}
+.menu-card-price{font-size:18px;font-weight:700;color:var(--red);white-space:nowrap}
+.menu-card-desc{color:var(--gray);font-size:14px;line-height:1.7}
+.menu-card-tag{
+  display:inline-block;margin-top:12px;padding:4px 12px;border-radius:50px;
+  background:rgba(0,0,0,0.05);font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--gray);
+}
+
+/* ─── MENU CTA BANNER ─── */
+.menu-cta-banner{
+  background:var(--red);padding:100px 60px;text-align:center;
+}
+.menu-cta-title{font-family:'Roboto Slab',serif;font-size:clamp(32px,5vw,64px);font-weight:900;color:var(--white);margin-bottom:16px;line-height:1.1}
+.menu-cta-sub{color:rgba(255,255,255,0.8);font-size:18px;margin-bottom:40px}
+.menu-cta-btn{
+  display:inline-block;padding:16px 44px;border-radius:50px;
+  background:var(--white);color:var(--red);font-weight:700;font-size:14px;
+  letter-spacing:2px;text-transform:uppercase;text-decoration:none;
+  transition:all 0.25s;
+}
+.menu-cta-btn:hover{background:var(--black);color:var(--white)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  nav{padding:18px 24px}
+  .nav-left,.nav-right{display:none}
+  .hamburger{display:flex}
+  .hero-content{max-width:100%}
+  .spin-badge{display:none}
+  .eat-sip{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-item.wide{grid-column:span 1}
+  .footer-grid{grid-template-columns:1fr}
+  .locations-section{padding:80px 24px}
+  .statement{padding:80px 24px}
+  .menu-section{padding:48px 24px}
+  .email-band{padding:60px 24px}
+  footer{padding:60px 24px 32px}
+  .menu-hero{padding:120px 24px 72px}
+  .menu-cta-banner{padding:72px 24px}
+}
+@media(max-width:600px){
+  .gallery-grid{grid-template-columns:1fr 1fr}
+  .gallery-item{height:180px}
+  .gallery-item.tall{height:366px}
+  .eat-block,.sip-block{padding:48px 28px}
+  .menu-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <div class="nav-left">
+    <a href="#" onclick="showPage('home');return false">Home</a>
+    <a href="#" onclick="showPage('menu');return false" id="nav-menu-link">Menu</a>
+    <a href="#">Locations</a>
+    <a href="#">Franchise</a>
+  </div>
+  <div class="nav-center">
+    <a href="#" onclick="showPage('home');return false">
+      <img src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/5984ea3bca4c8000015b7d88_FatShack_Logo_Website-600-min.avif" alt="Fat Shack"/>
+    </a>
+  </div>
+  <div class="nav-right">
+    <a href="#" onclick="showPage('menu');return false">Menu</a>
+    <a href="https://www.instagram.com/fatshack/" target="_blank">Instagram</a>
+    <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="nav-order-btn">Order Now</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="close-btn" onclick="toggleMobile()">✕</button>
+  <a href="#" onclick="showPage('home');toggleMobile();return false">home</a>
+  <a href="#" onclick="showPage('menu');toggleMobile();return false">menu</a>
+  <a href="#">locations</a>
+  <a href="#">franchise</a>
+  <a href="#">about</a>
+  <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="pill-btn mobile-order-btn">Order Now</a>
+</div>
+
+<!-- ════════════════════ HOME PAGE ════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <!-- Rotating badge SVG -->
+    <svg class="spin-badge" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <path id="circle-path" d="M70,70 m-55,0 a55,55 0 1,1 110,0 a55,55 0 1,1 -110,0"/>
+      </defs>
+      <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(252,185,0,0.3)" stroke-width="1"/>
+      <text font-size="11" fill="rgba(252,185,0,0.9)" font-family="Roboto" font-weight="700" letter-spacing="3">
+        <textPath href="#circle-path">FAT SHACK · LATE NIGHT DONE RIGHT · FAT SHACK ·</textPath>
+      </text>
+      <text x="70" y="76" text-anchor="middle" font-size="18" fill="rgba(252,185,0,0.9)" font-family="Roboto Slab" font-weight="900">FS</text>
+    </svg>
+
+    <div class="hero-content">
+      <h1 id="hero-title">
+        <span>Burgers, Wings &amp;</span>
+        <span>Fat Sandwiches.</span>
+      </h1>
+      <p id="hero-sub">Dine in, take-out, and delivery.<br/>Open late — because cravings don't sleep.</p>
+      <div class="hero-cta-group" id="hero-cta">
+        <a href="#" onclick="showPage('menu');return false" class="pill-btn pill-outline">See Menu</a>
+        <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="pill-btn pill-fill">Order Now</a>
+      </div>
+      <div class="hero-badges" id="hero-badges">
+        <span class="hero-badge gold">As Seen on Shark Tank</span>
+        <span class="hero-badge">Late Night Done Right</span>
+        <span class="hero-badge">$5.99 Fat Stacks</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISH ROTATOR -->
+  <div class="dish-rotator">
+    <div class="dish-track" id="dish-track">
+      <span class="dish-item">Fat Sandwich</span>
+      <span class="dish-item">Angus Burger</span>
+      <span class="dish-item">Deep Fried Oreos</span>
+      <span class="dish-item">Chicken Wings</span>
+      <span class="dish-item">Funnel Cake Bites</span>
+      <span class="dish-item">Loaded Fries</span>
+      <span class="dish-item">Mozzarella Sticks</span>
+      <span class="dish-item">Cheesesteak Philly</span>
+      <!-- duplicate for seamless loop -->
+      <span class="dish-item">Fat Sandwich</span>
+      <span class="dish-item">Angus Burger</span>
+      <span class="dish-item">Deep Fried Oreos</span>
+      <span class="dish-item">Chicken Wings</span>
+      <span class="dish-item">Funnel Cake Bites</span>
+      <span class="dish-item">Loaded Fries</span>
+      <span class="dish-item">Mozzarella Sticks</span>
+      <span class="dish-item">Cheesesteak Philly</span>
+    </div>
+  </div>
+
+  <!-- EAT / SIP -->
+  <div class="eat-sip">
+    <div class="eat-block" id="eat-block">
+      <div class="eat-bg"></div>
+      <div class="es-content">
+        <span class="es-label">Eat</span>
+        <div class="es-title">Built for the brave.</div>
+        <p class="es-body">Jam-packed Fat Sandwiches. 100% Angus Beef burgers. Crispy wings in sauces that slap. No apologies — just food that hits different.</p>
+        <a href="#" onclick="showPage('menu');return false" class="pill-btn pill-outline">Explore the Menu</a>
+      </div>
+    </div>
+    <div class="sip-block" id="sip-block">
+      <div class="sip-bg"></div>
+      <div class="es-content">
+        <span class="es-label">Sip</span>
+        <div class="es-title">Shake it off.</div>
+        <p class="es-body">OREO shakes. Vanilla. Chocolate. Strawberry. The perfect co-pilot for your late-night run. Cold, thick, and seriously satisfying.</p>
+        <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="pill-btn pill-outline">Order a Shake</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-header">
+      <span class="section-label">The Feed</span>
+      <h2 class="section-title">real food.<br/>real people.</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item tall"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f1.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f2.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f3-1.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f5.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item wide"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f4-1.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f6.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f7-1.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item tall"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f9.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f8.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f10.jpg" alt="Fat Shack food"/></div>
+      <div class="gallery-item"><img src="https://jfvegancafe.com/wp-content/uploads/2024/10/f-12.jpg" alt="Fat Shack food"/></div>
+    </div>
+    <div class="gallery-footer">
+      <a href="https://www.instagram.com/fatshack/" target="_blank" class="gallery-ig-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        Load More on Instagram
+      </a>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement" id="statement-section">
+    <div class="statement-bg-left"></div>
+    <div class="statement-bg-right"></div>
+    <h2 class="statement-title" id="statement-title">dangerously <span>good</span><br/>in every bite.</h2>
+    <p class="statement-sub">100% Angus Beef · Iconic Fat Sandwiches · Deep Fried Everything</p>
+  </section>
+
+  <!-- LOCATIONS -->
+  <section class="locations-section">
+    <div class="locations-header">
+      <span class="section-label">Find us near you</span>
+      <h2 class="section-title">13 States &amp; Growing</h2>
+    </div>
+    <div class="location-scroll" id="location-scroll">
+      <div class="loc-card"><span class="loc-state">CO</span><span class="loc-name">Colorado</span></div>
+      <div class="loc-card"><span class="loc-state">FL</span><span class="loc-name">Florida</span></div>
+      <div class="loc-card"><span class="loc-state">GA</span><span class="loc-name">Georgia</span></div>
+      <div class="loc-card"><span class="loc-state">IL</span><span class="loc-name">Illinois</span></div>
+      <div class="loc-card"><span class="loc-state">KS</span><span class="loc-name">Kansas</span></div>
+      <div class="loc-card"><span class="loc-state">MO</span><span class="loc-name">Missouri</span></div>
+      <div class="loc-card"><span class="loc-state">NV</span><span class="loc-name">Nevada</span></div>
+      <div class="loc-card"><span class="loc-state">OK</span><span class="loc-name">Oklahoma</span></div>
+      <div class="loc-card"><span class="loc-state">OR</span><span class="loc-name">Oregon</span></div>
+      <div class="loc-card"><span class="loc-state">PA</span><span class="loc-name">Pennsylvania</span></div>
+      <div class="loc-card"><span class="loc-state">TN</span><span class="loc-name">Tennessee</span></div>
+      <div class="loc-card"><span class="loc-state">TX</span><span class="loc-name">Texas</span></div>
+      <div class="loc-card"><span class="loc-state">WA</span><span class="loc-name">Washington</span></div>
+    </div>
+  </section>
+
+  <!-- EMAIL SIGNUP -->
+  <div class="email-band">
+    <h2 class="email-title">Join the Fat Shack Family</h2>
+    <p class="email-sub">Keep up with the latest news, promotions, and upcoming events.<br/>No spam — just the good stuff.</p>
+    <form class="email-form" onsubmit="return false">
+      <input type="email" placeholder="your@email.com"/>
+      <select>
+        <option value="">Your State</option>
+        <option>Colorado</option><option>Florida</option><option>Georgia</option>
+        <option>Illinois</option><option>Kansas</option><option>Missouri</option>
+        <option>Nevada</option><option>Oklahoma</option><option>Oregon</option>
+        <option>Pennsylvania</option><option>Tennessee</option><option>Texas</option>
+        <option>Washington</option>
+      </select>
+      <button class="email-submit" type="submit">Subscribe</button>
+    </form>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/5984ea3bca4c8000015b7d88_FatShack_Logo_Website-600-min.avif" alt="Fat Shack"/>
+        <p class="footer-tagline">Late Night Done Right</p>
+      </div>
+      <div class="footer-nav">
+        <h4>Links</h4>
+        <a href="#" onclick="showPage('menu');return false">Menu</a>
+        <a href="#">About</a>
+        <a href="#">Franchise</a>
+        <a href="#">Locations</a>
+        <a href="#">Contact</a>
+        <a href="#">Merch</a>
+        <a href="#">Gift Cards</a>
+      </div>
+      <div class="footer-right">
+        <h4>Hours</h4>
+        <p class="footer-hours">Mon – Thu: 11am – 2am<br/>Fri – Sat: 11am – 3am<br/>Sun: 12pm – 12am</p>
+        <div class="social-links">
+          <a class="social-link" href="https://www.facebook.com/fatshack/" target="_blank" aria-label="Facebook">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a class="social-link" href="https://www.instagram.com/fatshack/" target="_blank" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a class="social-link" href="https://twitter.com/fat_shack" target="_blank" aria-label="X">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a class="social-link" href="https://www.youtube.com/@fatshackofficial" target="_blank" aria-label="YouTube">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2024 Fat Shack. All rights reserved.</p>
+      <a href="mailto:info@fatshack.com" class="footer-email">info@fatshack.com</a>
+    </div>
+  </footer>
+
+</div><!-- /page-home -->
+
+<!-- ════════════════════ MENU PAGE ════════════════════ -->
+<div class="page" id="page-menu">
+
+  <!-- MENU HERO -->
+  <section class="menu-hero">
+    <div class="menu-hero-bg"></div>
+    <h1 class="menu-hero-title" id="menu-hero-title">The Menu.</h1>
+    <p class="menu-hero-sub" id="menu-hero-sub">100% Angus Beef. Iconic Fat Sandwiches.<br/>Deep Fried Everything.</p>
+  </section>
+
+  <div class="menu-page-content">
+
+    <!-- FAT SANDWICHES -->
+    <div class="menu-section" id="ms-fatsandwich">
+      <div class="menu-section-header">
+        <span class="menu-section-label">The Iconic</span>
+        <h2 class="menu-section-title">Fat Sandwiches</h2>
+        <p class="menu-section-desc">Our iconic Fat Sandwiches are what keep customers coming back. Jam-packed with your favorite late-night food — served on a long roll, half or whole.</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card iconic">
+          <div class="iconic-label">⭐ The Iconic</div>
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Shack™</span>
+            <span class="menu-card-price">$14.99</span>
+          </div>
+          <p class="menu-card-desc">Cheesesteak, chicken fingers, jalapeño poppers, mozzarella sticks, fries, honey-jalapeño mustard.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Andy™</span>
+            <span class="menu-card-price">$13.99</span>
+          </div>
+          <p class="menu-card-desc">Fried pickles, mozzarella sticks, onion rings, fries, ranch.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Bronco™</span>
+            <span class="menu-card-price">$13.99</span>
+          </div>
+          <p class="menu-card-desc">Chicken fingers, mozzarella sticks, fries, marinara.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Chance™</span>
+            <span class="menu-card-price">$14.99</span>
+          </div>
+          <p class="menu-card-desc">Jalapeño poppers, cheesesteak, chicken fingers, fries, buffalo ranch.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Cow™</span>
+            <span class="menu-card-price">$13.99</span>
+          </div>
+          <p class="menu-card-desc">Mac n' cheese, bacon, mozzarella sticks, fries, buffalo ranch.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Doobie™</span>
+            <span class="menu-card-price">$13.99</span>
+          </div>
+          <p class="menu-card-desc">Chicken fingers, fries, onion rings, mozzarella sticks, honey mustard.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Jersey™</span>
+            <span class="menu-card-price">$14.49</span>
+          </div>
+          <p class="menu-card-desc">Cheesesteak, chicken fingers, mozzarella sticks, fries, honey mustard.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fat Maverick™</span>
+            <span class="menu-card-price">$13.99</span>
+          </div>
+          <p class="menu-card-desc">Mac n' cheese, chicken fingers, fries, BBQ sauce.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- BURGERS -->
+    <div class="menu-section" id="ms-burgers">
+      <div class="menu-section-header">
+        <span class="menu-section-label">100% Angus Beef</span>
+        <h2 class="menu-section-title">Burgers</h2>
+        <p class="menu-section-desc">American cheese, lettuce, tomato, onion, pickles and burger sauce on a toasted brioche bun. Stack it up.</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">The Single</span>
+            <span class="menu-card-price">$9.99</span>
+          </div>
+          <p class="menu-card-desc">Single quarter-pound Angus patty. The classic.</p>
+          <span class="menu-card-tag">¼ lb patty</span>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">The Classic</span>
+            <span class="menu-card-price">$12.99</span>
+          </div>
+          <p class="menu-card-desc">Double quarter-pound Angus patties. Serious business.</p>
+          <span class="menu-card-tag">2×¼ lb patties</span>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">The Supreme</span>
+            <span class="menu-card-price">$15.99</span>
+          </div>
+          <p class="menu-card-desc">Triple quarter-pound Angus patties. No explanation needed.</p>
+          <span class="menu-card-tag">3×¼ lb patties</span>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">BBQ Bacon</span>
+            <span class="menu-card-price">$13.49</span>
+          </div>
+          <p class="menu-card-desc">Double smash patties, crispy bacon, BBQ sauce, cheddar.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Mushroom Swiss</span>
+            <span class="menu-card-price">$13.49</span>
+          </div>
+          <p class="menu-card-desc">Double patties, sautéed mushrooms, Swiss cheese, garlic aioli.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- WINGS -->
+    <div class="menu-section" id="ms-wings">
+      <div class="menu-section-header">
+        <span class="menu-section-label">Crispy &amp; Saucy</span>
+        <h2 class="menu-section-title">Wings &amp; Fingers</h2>
+        <p class="menu-section-desc">Sauces: Buffalo · Honey Garlic · BBQ · Ranch · Mango Habanero · Garlic Parmesan</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Buffalo Wings (6)</span>
+            <span class="menu-card-price">$10.99</span>
+          </div>
+          <p class="menu-card-desc">Traditional bone-in wings tossed in your choice of sauce.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Buffalo Wings (10)</span>
+            <span class="menu-card-price">$16.99</span>
+          </div>
+          <p class="menu-card-desc">Go big. Ten bone-in wings, your sauce, your rules.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Buffalo Wings (15)</span>
+            <span class="menu-card-price">$22.99</span>
+          </div>
+          <p class="menu-card-desc">Fifteen wings. Feeding the crew.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Boneless Fingers (6)</span>
+            <span class="menu-card-price">$10.99</span>
+          </div>
+          <p class="menu-card-desc">Six crispy boneless chicken fingers, sauced up.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Boneless Fingers (12)</span>
+            <span class="menu-card-price">$19.99</span>
+          </div>
+          <p class="menu-card-desc">Twelve boneless fingers. The full commitment.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MUNCHIES / SIDES -->
+    <div class="menu-section" id="ms-sides">
+      <div class="menu-section-header">
+        <span class="menu-section-label">Starters &amp; Sides</span>
+        <h2 class="menu-section-title">Munchies</h2>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Loaded Fries</span>
+            <span class="menu-card-price">$7.99</span>
+          </div>
+          <p class="menu-card-desc">Crispy fries loaded with cheese, bacon bits, and sour cream.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Onion Rings</span>
+            <span class="menu-card-price">$5.99</span>
+          </div>
+          <p class="menu-card-desc">Thick-cut, golden, crunchy. With your choice of dip.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Mozzarella Sticks</span>
+            <span class="menu-card-price">$6.99</span>
+          </div>
+          <p class="menu-card-desc">Pull-apart cheese sticks served with marinara.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Mac N' Cheese Bites</span>
+            <span class="menu-card-price">$6.99</span>
+          </div>
+          <p class="menu-card-desc">Creamy mac n' cheese fried to golden perfection. Served with buffalo ranch.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Jalapeño Poppers</span>
+            <span class="menu-card-price">$6.99</span>
+          </div>
+          <p class="menu-card-desc">Cream cheese-stuffed jalapeños, battered and fried. With ranch.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fried Pickles</span>
+            <span class="menu-card-price">$5.99</span>
+          </div>
+          <p class="menu-card-desc">Tangy dill pickles battered and fried. Served with ranch.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Munchie Madness Platter</span>
+            <span class="menu-card-price">$19.99</span>
+          </div>
+          <p class="menu-card-desc">Chicken fingers, mozzarella sticks, onion rings, mac n' cheese bites with all sauces. Share if you dare.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESSERTS -->
+    <div class="menu-section" id="ms-desserts">
+      <div class="menu-section-header">
+        <span class="menu-section-label">Sweet &amp; Fried</span>
+        <h2 class="menu-section-title">Deep Fried Desserts</h2>
+        <p class="menu-section-desc">Battered, deep-fried, and covered in powdered sugar. Chocolate or strawberry sauce on the side.</p>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Deep-Fried Oreos™ (3)</span>
+            <span class="menu-card-price">$5.99</span>
+          </div>
+          <p class="menu-card-desc">The original. Warm, gooey Oreos in crispy batter, dusted with powdered sugar.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Deep-Fried Oreos™ (5)</span>
+            <span class="menu-card-price">$7.99</span>
+          </div>
+          <p class="menu-card-desc">Five is always better than three.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fried Cheesecake Bites (3)</span>
+            <span class="menu-card-price">$6.49</span>
+          </div>
+          <p class="menu-card-desc">Creamy cheesecake bites fried golden. Powdered sugar finish.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fried Cheesecake Bites (5)</span>
+            <span class="menu-card-price">$8.49</span>
+          </div>
+          <p class="menu-card-desc">Five bites of pure indulgence.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Funnel Cake Bites (6)</span>
+            <span class="menu-card-price">$5.99</span>
+          </div>
+          <p class="menu-card-desc">Crispy carnival-style funnel cake bites. Powdered sugar, chocolate or strawberry dip.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fried Twinkies</span>
+            <span class="menu-card-price">$6.99</span>
+          </div>
+          <p class="menu-card-desc">The iconic Twinkie, battered and fried. A Fat Shack classic.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DRINKS -->
+    <div class="menu-section" id="ms-drinks">
+      <div class="menu-section-header">
+        <span class="menu-section-label">Cold &amp; Creamy</span>
+        <h2 class="menu-section-title">Drinks &amp; Shakes</h2>
+      </div>
+      <div class="menu-grid">
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">OREO™ Shake</span>
+            <span class="menu-card-price">$6.99</span>
+          </div>
+          <p class="menu-card-desc">Thick blended milkshake with Oreo cookies. The perfect closer.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Vanilla Shake</span>
+            <span class="menu-card-price">$5.99</span>
+          </div>
+          <p class="menu-card-desc">Classic, creamy, cold vanilla milkshake.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Chocolate Shake</span>
+            <span class="menu-card-price">$5.99</span>
+          </div>
+          <p class="menu-card-desc">Rich, thick chocolate shake made the right way.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Strawberry Shake</span>
+            <span class="menu-card-price">$5.99</span>
+          </div>
+          <p class="menu-card-desc">Fresh strawberry milkshake. Sweet, fruity, thick.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Lemonade</span>
+            <span class="menu-card-price">$3.49</span>
+          </div>
+          <p class="menu-card-desc">Fresh-squeezed style lemonade. Regular or pink.</p>
+        </div>
+        <div class="menu-card">
+          <div class="menu-card-top">
+            <span class="menu-card-name">Fountain Soda</span>
+            <span class="menu-card-price">$2.49</span>
+          </div>
+          <p class="menu-card-desc">Pepsi, Diet Pepsi, Mountain Dew, Sierra Mist, and more.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /menu-page-content -->
+
+  <!-- MENU CTA BANNER -->
+  <div class="menu-cta-banner" id="menu-cta-banner">
+    <h2 class="menu-cta-title">Ready to get fat?<br/>Order now — pickup or delivery.</h2>
+    <p class="menu-cta-sub">Lunch specials from 11am–4pm. Wings half price every Monday.</p>
+    <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="menu-cta-btn">Order Now</a>
+  </div>
+
+  <!-- FOOTER (repeated) -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/5984ea3bca4c8000015b7d88_FatShack_Logo_Website-600-min.avif" alt="Fat Shack"/>
+        <p class="footer-tagline">Late Night Done Right</p>
+      </div>
+      <div class="footer-nav">
+        <h4>Links</h4>
+        <a href="#" onclick="showPage('home');return false">Home</a>
+        <a href="#" onclick="showPage('menu');return false">Menu</a>
+        <a href="#">Franchise</a>
+        <a href="#">Locations</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-right">
+        <h4>Find Us</h4>
+        <p class="footer-hours">13 states &amp; growing.<br/>Open late every night.<br/>info@fatshack.com</p>
+        <div class="social-links">
+          <a class="social-link" href="https://www.facebook.com/fatshack/" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a class="social-link" href="https://www.instagram.com/fatshack/" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a class="social-link" href="https://twitter.com/fat_shack" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+          <a class="social-link" href="https://www.youtube.com/@fatshackofficial" target="_blank"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.495 6.205a3.007 3.007 0 0 0-2.088-2.088c-1.87-.501-9.396-.501-9.396-.501s-7.507-.01-9.396.501A3.007 3.007 0 0 0 .527 6.205a31.247 31.247 0 0 0-.522 5.805 31.247 31.247 0 0 0 .522 5.783 3.007 3.007 0 0 0 2.088 2.088c1.868.502 9.396.502 9.396.502s7.506 0 9.396-.502a3.007 3.007 0 0 0 2.088-2.088 31.247 31.247 0 0 0 .5-5.783 31.247 31.247 0 0 0-.5-5.805zM9.609 15.601V8.408l6.264 3.602z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2024 Fat Shack. All rights reserved.</p>
+      <a href="mailto:info@fatshack.com" class="footer-email">info@fatshack.com</a>
+    </div>
+  </footer>
+
+</div><!-- /page-menu -->
+
+<!-- FRAMER MOTION CDN -->
+<script src="https://cdn.jsdelivr.net/npm/framer-motion@11/dist/framer-motion.js"></script>
+
+<script>
+// ─── PAGE SWITCHING ───
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  // update nav active state
+  const menuLink = document.getElementById('nav-menu-link');
+  if (name === 'menu') {
+    menuLink.classList.add('nav-active');
+    initMenuAnimations();
+  } else {
+    menuLink.classList.remove('nav-active');
+  }
+}
+
+function toggleMobile() {
+  document.getElementById('mobile-menu').classList.toggle('open');
+}
+
+// ─── SCROLL ANIMATIONS ───
+document.addEventListener('DOMContentLoaded', () => {
+  const { animate, inView } = window.Motion;
+
+  // Hero headline — word stagger on load
+  animate('#hero-title', { opacity: [0, 1], y: [40, 0] }, { duration: 0.7, ease: 'easeOut' });
+  animate('#hero-sub', { opacity: [0, 1], y: [30, 0] }, { duration: 0.6, delay: 0.4, ease: 'easeOut' });
+  animate('#hero-cta', { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.65, ease: 'easeOut' });
+  animate('#hero-badges', { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.85, ease: 'easeOut' });
+
+  // Eat block — slide from left
+  inView('#eat-block', () => {
+    animate('#eat-block', { opacity: [0, 1], x: [-60, 0] }, { duration: 0.65, ease: 'easeOut' });
+  }, { margin: '-10% 0px' });
+
+  // Sip block — slide from right
+  inView('#sip-block', () => {
+    animate('#sip-block', { opacity: [0, 1], x: [60, 0] }, { duration: 0.65, ease: 'easeOut' });
+  }, { margin: '-10% 0px' });
+
+  // Gallery items — fade up staggered
+  const galleryItems = document.querySelectorAll('#page-home .gallery-item');
+  galleryItems.forEach((el, i) => {
+    inView(el, () => {
+      animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 0.5, delay: i * 0.08, ease: 'easeOut' });
+    }, { margin: '-5% 0px' });
+  });
+
+  // Statement — scale + fade
+  inView('#statement-title', () => {
+    animate('#statement-title', { opacity: [0, 1], scale: [0.92, 1] }, { duration: 0.7, ease: 'easeOut' });
+  }, { margin: '-10% 0px' });
+
+  // Location cards — staggered left to right
+  const locCards = document.querySelectorAll('.loc-card');
+  locCards.forEach((el, i) => {
+    inView(el, () => {
+      animate(el, { opacity: [0, 1], x: [-20, 0] }, { duration: 0.4, delay: i * 0.06, ease: 'easeOut' });
+    }, { margin: '-5% 0px' });
+  });
+
+  // Email band
+  inView('.email-band', () => {
+    animate('.email-band', { opacity: [0, 1], y: [30, 0] }, { duration: 0.6, ease: 'easeOut' });
+  }, { margin: '-10% 0px' });
+
+  // Footer
+  inView('footer', () => {
+    animate('footer', { opacity: [0, 1] }, { duration: 0.6, ease: 'easeOut' });
+  }, { margin: '-5% 0px' });
+});
+
+// ─── MENU PAGE ANIMATIONS (called on page switch) ───
+let menuAnimsInit = false;
+function initMenuAnimations() {
+  if (menuAnimsInit) return;
+  menuAnimsInit = true;
+  const { animate, inView } = window.Motion;
+
+  // Menu hero
+  setTimeout(() => {
+    animate('#menu-hero-title', { opacity: [0, 1], y: [40, 0] }, { duration: 0.7, ease: 'easeOut' });
+    animate('#menu-hero-sub', { opacity: [0, 1], y: [20, 0] }, { duration: 0.55, delay: 0.3, ease: 'easeOut' });
+  }, 50);
+
+  // Menu section headings
+  document.querySelectorAll('.menu-section-title').forEach(el => {
+    inView(el, () => {
+      animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 0.55, ease: 'easeOut' });
+    }, { margin: '-5% 0px' });
+  });
+
+  // Menu cards — fade up in pairs
+  const cards = document.querySelectorAll('.menu-card');
+  cards.forEach((el, i) => {
+    inView(el, () => {
+      animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 0.45, delay: (i % 2) * 0.1, ease: 'easeOut' });
+    }, { margin: '-5% 0px' });
+  });
+
+  // CTA banner
+  inView('#menu-cta-banner', () => {
+    animate('#menu-cta-banner', { opacity: [0, 1], y: [40, 0] }, { duration: 0.6, ease: 'easeOut' });
+  }, { margin: '-10% 0px' });
+}
+</script>
+</body>
+</html>
