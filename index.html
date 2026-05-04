@@ -103,7 +103,8 @@ nav{
   color:var(--gold);font-weight:700;
   border:1px solid rgba(252,185,0,0.4);border-radius:50px;padding:7px 20px;
 }
-#hero-eyebrow,#hero-title,#hero-sub,.hero-cta-group,.hero-badges{opacity:1}
+#hero-eyebrow,#hero-sub,.hero-cta-group,.hero-badges{opacity:0}
+#hero-title{opacity:1}
 #hero-title{
   font-family:'Roboto Slab',serif;font-size:clamp(60px,9vw,128px);
   font-weight:900;color:var(--white);line-height:0.97;
@@ -474,8 +475,8 @@ footer{
     <div class="hero-content">
       <span class="hero-eyebrow" id="hero-eyebrow">Late Night Done Right</span>
       <h1 id="hero-title">
-        <span>Burgers, Wings &amp;</span>
-        <span><span class="accent">Fat</span> Sandwiches.</span>
+        <span id="hero-line1">Burgers, Wings &amp;</span>
+        <span id="hero-line2"><span class="accent">Fat</span> Sandwiches.</span>
       </h1>
       <p id="hero-sub">Dine in, take-out, and delivery — open late<br/>because cravings don't sleep.</p>
       <div class="hero-cta-group" id="hero-cta">
@@ -1172,17 +1173,66 @@ function toggleMobile() {
   document.getElementById('mobile-menu').classList.toggle('open');
 }
 
+// ─── SCRAMBLE TEXT (ported from SpecialText React component) ───
+const SCRAMBLE_CHARS = "_!X$0-+*#";
+
+function getRC(prev) {
+  let c;
+  do { c = SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]; } while (c === prev);
+  return c;
+}
+
+function scrambleText(el, finalText, speed, delayMs, onComplete) {
+  let step = 0, phase = 'phase1', timer;
+  el.textContent = '\u00A0'.repeat(finalText.length);
+
+  function tick() {
+    if (phase === 'phase1') {
+      const maxSteps = finalText.length * 2;
+      const len = Math.min(step + 1, finalText.length);
+      const chars = [];
+      for (let i = 0; i < len; i++) chars.push(getRC(chars[i - 1]));
+      for (let i = len; i < finalText.length; i++) chars.push('\u00A0');
+      el.textContent = chars.join('');
+      if (step < maxSteps - 1) { step++; } else { phase = 'phase2'; step = 0; }
+    } else {
+      const revealed = Math.floor(step / 2);
+      const chars = [];
+      for (let i = 0; i < revealed && i < finalText.length; i++) chars.push(finalText[i]);
+      if (revealed < finalText.length) chars.push(step % 2 === 0 ? '_' : getRC());
+      while (chars.length < finalText.length) chars.push(getRC());
+      el.textContent = chars.join('');
+      if (step < finalText.length * 2 - 1) { step++; }
+      else { el.textContent = finalText; clearInterval(timer); if (onComplete) onComplete(); }
+    }
+  }
+
+  setTimeout(() => { timer = setInterval(tick, speed); }, delayMs);
+}
+
 // ─── SCROLL ANIMATIONS ───
 document.addEventListener('DOMContentLoaded', () => {
+  // Scramble hero headline — line1 then line2
+  const line1 = document.getElementById('hero-line1');
+  const line2 = document.getElementById('hero-line2');
+
+  if (line1 && line2) {
+    scrambleText(line1, 'Burgers, Wings &', 22, 0, () => {
+      scrambleText(line2, 'Fat Sandwiches.', 22, 0, () => {
+        // Restore accent span on "Fat" after scramble resolves
+        line2.innerHTML = '<span class="accent">Fat</span> Sandwiches.';
+      });
+    });
+  }
+
   if (!window.Motion) return;
   const { animate, inView } = window.Motion;
 
-  // Hero — staggered entrance
+  // Remaining hero elements fade in while scramble runs
   animate('#hero-eyebrow', { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, ease: 'easeOut' });
-  animate('#hero-title', { opacity: [0, 1], y: [44, 0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
-  animate('#hero-sub', { opacity: [0, 1], y: [28, 0] }, { duration: 0.6, delay: 0.4, ease: 'easeOut' });
-  animate('#hero-cta', { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.62, ease: 'easeOut' });
-  animate('#hero-badges', { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.82, ease: 'easeOut' });
+  animate('#hero-sub',     { opacity: [0, 1], y: [28, 0] }, { duration: 0.6, delay: 0.3, ease: 'easeOut' });
+  animate('#hero-cta',     { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.5, ease: 'easeOut' });
+  animate('#hero-badges',  { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.7, ease: 'easeOut' });
 
   // Eat block — slide from left
   inView('#eat-block', () => {
