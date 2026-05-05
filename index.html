@@ -165,35 +165,51 @@ nav{
 .dish-item::after{content:'✦';color:var(--gold);font-size:14px}
 @keyframes scrollTrack{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* ─── EAT / SIP ─── */
-.eat-sip{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
-.eat-block,.sip-block{
-  position:relative;overflow:hidden;
-  display:flex;align-items:flex-end;padding:60px 56px;
+/* ─── EAT SECTION ─── */
+.eat-section{
+  display:grid;grid-template-columns:58fr 42fr;
+  min-height:620px;background:var(--dark);overflow:hidden;
 }
-.eat-block{background:#1a1a1a}
-.sip-block{background:#0f0f0f}
-.eat-bg{
-  position:absolute;inset:0;
-  background:url('https://jfvegancafe.com/wp-content/uploads/2024/10/f2.jpg') center/cover no-repeat;
-  opacity:0.45;transition:opacity 0.4s;
+.eat-section-img{overflow:hidden;position:relative}
+.eat-section-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.8s ease}
+.eat-section:hover .eat-section-img img{transform:scale(1.03)}
+.eat-section-content{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 72px;border-left:1px solid rgba(255,255,255,0.06);
 }
-.sip-bg{
-  position:absolute;inset:0;
-  background:url('https://jfvegancafe.com/wp-content/uploads/2024/10/sip-bg.jpg') center/cover no-repeat;
-  opacity:0.45;transition:opacity 0.4s;
+
+/* ─── SIP SECTION ─── */
+.sip-section{
+  display:grid;grid-template-columns:42fr 58fr;
+  min-height:620px;background:var(--cream);overflow:hidden;
 }
-.eat-block:hover .eat-bg,.sip-block:hover .sip-bg{opacity:0.6}
-.es-content{position:relative;z-index:2}
+.sip-section-content{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:80px 72px;border-right:1px solid rgba(0,0,0,0.06);
+}
+.sip-section-img{overflow:hidden;position:relative}
+.sip-section-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.8s ease}
+.sip-section:hover .sip-section-img img{transform:scale(1.03)}
+
+/* shared split-section text */
 .es-label{
-  font-size:11px;letter-spacing:4px;text-transform:uppercase;
-  color:var(--gold);font-weight:700;margin-bottom:14px;display:block;
+  font-size:10px;letter-spacing:5px;text-transform:uppercase;
+  color:var(--gold);font-weight:700;margin-bottom:20px;display:block;
 }
+.es-label.dark{color:var(--black);opacity:0.5}
 .es-title{
-  font-family:'Roboto Slab',serif;font-size:clamp(40px,5vw,72px);
-  font-weight:900;color:var(--white);line-height:1;margin-bottom:20px;
+  font-family:'Roboto Slab',serif;font-size:clamp(44px,5.5vw,80px);
+  font-weight:900;line-height:1;margin-bottom:24px;
 }
-.es-body{color:rgba(255,255,255,0.7);font-size:16px;line-height:1.8;max-width:340px;margin-bottom:28px}
+.es-title.light{color:var(--white)}
+.es-title.dark{color:var(--black)}
+.es-body{font-size:16px;line-height:1.85;max-width:360px;margin-bottom:36px}
+.es-body.light{color:rgba(255,255,255,0.65)}
+.es-body.dark{color:var(--gray)}
+.es-divider{
+  width:48px;height:2px;background:var(--gold);
+  margin-bottom:32px;border-radius:2px;
+}
 
 /* ─── GALLERY ─── */
 .gallery-section{padding:80px 0;background:var(--cream)}
@@ -394,7 +410,12 @@ footer{
   .hamburger{display:flex}
   .hero-content{max-width:100%}
   .spin-badge{display:none}
-  .eat-sip{grid-template-columns:1fr}
+  .eat-section,.sip-section{grid-template-columns:1fr;min-height:auto}
+  .eat-section-img,.sip-section-img{height:320px}
+  .eat-section-content,.sip-section-content{padding:56px 32px}
+  .sip-section{grid-template-rows:auto auto}
+  .sip-section-content{order:2}
+  .sip-section-img{order:1;height:320px}
   .gallery-grid{grid-template-columns:repeat(2,1fr)}
   .gallery-item.wide{grid-column:span 1}
   .footer-grid{grid-template-columns:1fr}
@@ -410,7 +431,6 @@ footer{
   .gallery-grid{grid-template-columns:1fr 1fr}
   .gallery-item{height:180px}
   .gallery-item.tall{height:366px}
-  .eat-block,.sip-block{padding:48px 28px}
   .menu-grid{grid-template-columns:1fr}
 }
 </style>
@@ -513,27 +533,33 @@ footer{
     </div>
   </div>
 
-  <!-- EAT / SIP -->
-  <div class="eat-sip">
-    <div class="eat-block" id="eat-block">
-      <div class="eat-bg"></div>
-      <div class="es-content">
-        <span class="es-label">Eat</span>
-        <div class="es-title">Built for the brave.</div>
-        <p class="es-body">Jam-packed Fat Sandwiches. 100% Angus Beef burgers. Crispy wings in sauces that slap. No apologies — just food that hits different.</p>
-        <a href="#" onclick="showPage('menu');return false" class="pill-btn pill-outline">Explore the Menu</a>
-      </div>
+  <!-- EAT SECTION -->
+  <section class="eat-section">
+    <div class="eat-section-img" id="eat-img">
+      <img src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b4883ebbc520ddf5b84a5_8%20-%20Fat%20Shack%20-%20Cut-min.avif" alt="Fat Shack Sandwich"/>
     </div>
-    <div class="sip-block" id="sip-block">
-      <div class="sip-bg"></div>
-      <div class="es-content">
-        <span class="es-label">Sip</span>
-        <div class="es-title">Shake it off.</div>
-        <p class="es-body">OREO shakes. Vanilla. Chocolate. Strawberry. The perfect co-pilot for your late-night run. Cold, thick, and seriously satisfying.</p>
-        <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="pill-btn pill-outline">Order a Shake</a>
-      </div>
+    <div class="eat-section-content" id="eat-content">
+      <span class="es-label">Eat</span>
+      <div class="es-divider"></div>
+      <h2 class="es-title light">Built for<br/>the brave.</h2>
+      <p class="es-body light">Jam-packed Fat Sandwiches. 100% Angus Beef burgers. Crispy wings in sauces that slap. No apologies — just food that hits different.</p>
+      <a href="#" onclick="showPage('menu');return false" class="pill-btn pill-outline">Explore the Menu</a>
     </div>
-  </div>
+  </section>
+
+  <!-- SIP SECTION -->
+  <section class="sip-section">
+    <div class="sip-section-content" id="sip-content">
+      <span class="es-label dark">Sip</span>
+      <div class="es-divider"></div>
+      <h2 class="es-title dark">Shake<br/>it off.</h2>
+      <p class="es-body dark">OREO shakes. Vanilla. Chocolate. Strawberry. The perfect co-pilot for your late-night run. Cold, thick, and seriously satisfying.</p>
+      <a href="https://order.toasttab.com/online/locations/ee7cc872-2aa5-435b-bb62-30af2f802a0b/default" target="_blank" class="pill-btn pill-fill">Order a Shake</a>
+    </div>
+    <div class="sip-section-img" id="sip-img">
+      <img src="https://cdn.prod.website-files.com/5984ea3bca4c8000015b7d01/666b55118c610b58e8e98294_1-Oreo%20Shake-min.avif" alt="OREO Milkshake"/>
+    </div>
+  </section>
 
   <!-- GALLERY -->
   <section class="gallery-section">
@@ -1177,82 +1203,119 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!window.Motion) return;
   const { animate, inView } = window.Motion;
 
-  // Hero — staggered entrance
+  // ── Hero elements ──
   animate('#hero-eyebrow', { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, ease: 'easeOut' });
-  animate('#hero-title', { opacity: [0, 1], y: [44, 0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
-  animate('#hero-sub', { opacity: [0, 1], y: [28, 0] }, { duration: 0.6, delay: 0.4, ease: 'easeOut' });
-  animate('#hero-cta', { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.62, ease: 'easeOut' });
-  animate('#hero-badges', { opacity: [0, 1], y: [16, 0] }, { duration: 0.5, delay: 0.82, ease: 'easeOut' });
+  animate('#hero-title',   { opacity: [0, 1], y: [44, 0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
+  animate('#hero-sub',     { opacity: [0, 1], y: [28, 0] }, { duration: 0.6,  delay: 0.4,  ease: 'easeOut' });
+  animate('#hero-cta',     { opacity: [0, 1], y: [20, 0] }, { duration: 0.5,  delay: 0.62, ease: 'easeOut' });
+  animate('#hero-badges',  { opacity: [0, 1], y: [16, 0] }, { duration: 0.5,  delay: 0.82, ease: 'easeOut' });
 
-  // Eat block — slide from left
-  inView('#eat-block', () => {
-    animate('#eat-block', { opacity: [0, 1], x: [-60, 0] }, { duration: 0.65, ease: 'easeOut' });
-  }, { margin: '-10% 0px' });
+  // ── Dish rotator ──
+  inView('.dish-rotator', () => {
+    animate('.dish-rotator', { opacity: [0, 1] }, { duration: 0.6, ease: 'easeOut' });
+  }, { margin: '-5% 0px' });
 
-  // Sip block — slide from right
-  inView('#sip-block', () => {
-    animate('#sip-block', { opacity: [0, 1], x: [60, 0] }, { duration: 0.65, ease: 'easeOut' });
-  }, { margin: '-10% 0px' });
+  // ── EAT section — image from left, content from right ──
+  inView('#eat-img', () => {
+    animate('#eat-img', { opacity: [0, 1], x: [-80, 0] }, { duration: 0.85, ease: 'easeOut' });
+  }, { margin: '-8% 0px' });
+  inView('#eat-content', () => {
+    animate('#eat-content', { opacity: [0, 1], x: [80, 0] }, { duration: 0.85, ease: 'easeOut' });
+  }, { margin: '-8% 0px' });
 
-  // Gallery items — fade up staggered
-  const galleryItems = document.querySelectorAll('#page-home .gallery-item');
-  galleryItems.forEach((el, i) => {
+  // ── SIP section — content from left, image from right ──
+  inView('#sip-content', () => {
+    animate('#sip-content', { opacity: [0, 1], x: [-80, 0] }, { duration: 0.85, ease: 'easeOut' });
+  }, { margin: '-8% 0px' });
+  inView('#sip-img', () => {
+    animate('#sip-img', { opacity: [0, 1], x: [80, 0] }, { duration: 0.85, ease: 'easeOut' });
+  }, { margin: '-8% 0px' });
+
+  // ── Gallery header ──
+  inView('.gallery-header', () => {
+    animate('.section-label', { opacity: [0, 1], y: [12, 0] }, { duration: 0.45, ease: 'easeOut' });
+    animate('.section-title', { opacity: [0, 1], y: [28, 0] }, { duration: 0.6, delay: 0.12, ease: 'easeOut' });
+  }, { margin: '-5% 0px' });
+
+  // ── Gallery items — staggered fade up ──
+  document.querySelectorAll('#page-home .gallery-item').forEach((el, i) => {
     inView(el, () => {
-      animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 0.5, delay: i * 0.08, ease: 'easeOut' });
+      animate(el, { opacity: [0, 1], y: [32, 0] }, { duration: 0.5, delay: (i % 4) * 0.08, ease: 'easeOut' });
     }, { margin: '-5% 0px' });
   });
 
-  // Statement — scale + fade
-  inView('#statement-title', () => {
-    animate('#statement-title', { opacity: [0, 1], scale: [0.92, 1] }, { duration: 0.7, ease: 'easeOut' });
+  // ── Statement section ──
+  inView('#statement-section', () => {
+    animate('#statement-title', { opacity: [0, 1], scale: [0.93, 1] }, { duration: 0.75, ease: 'easeOut' });
+    animate('.statement-sub',   { opacity: [0, 1], y: [16, 0] },       { duration: 0.5,  delay: 0.25, ease: 'easeOut' });
   }, { margin: '-10% 0px' });
 
-  // Location cards — staggered left to right
-  const locCards = document.querySelectorAll('.loc-card');
-  locCards.forEach((el, i) => {
+  // ── Locations header + cards ──
+  inView('.locations-header', () => {
+    animate('.locations-header', { opacity: [0, 1], y: [24, 0] }, { duration: 0.6, ease: 'easeOut' });
+  }, { margin: '-5% 0px' });
+  document.querySelectorAll('.loc-card').forEach((el, i) => {
     inView(el, () => {
-      animate(el, { opacity: [0, 1], x: [-20, 0] }, { duration: 0.4, delay: i * 0.06, ease: 'easeOut' });
+      animate(el, { opacity: [0, 1], y: [20, 0] }, { duration: 0.4, delay: i * 0.05, ease: 'easeOut' });
     }, { margin: '-5% 0px' });
   });
 
-  // Email band
+  // ── Email band ──
   inView('.email-band', () => {
-    animate('.email-band', { opacity: [0, 1], y: [30, 0] }, { duration: 0.6, ease: 'easeOut' });
+    animate('.email-title', { opacity: [0, 1], y: [28, 0] }, { duration: 0.6,  ease: 'easeOut' });
+    animate('.email-sub',   { opacity: [0, 1], y: [18, 0] }, { duration: 0.5,  delay: 0.15, ease: 'easeOut' });
+    animate('.email-form',  { opacity: [0, 1], y: [18, 0] }, { duration: 0.5,  delay: 0.3,  ease: 'easeOut' });
   }, { margin: '-10% 0px' });
 
-  // Footer
+  // ── Footer ──
   inView('footer', () => {
-    animate('footer', { opacity: [0, 1] }, { duration: 0.6, ease: 'easeOut' });
+    animate('footer', { opacity: [0, 1], y: [20, 0] }, { duration: 0.6, ease: 'easeOut' });
   }, { margin: '-5% 0px' });
 });
 
-// ─── MENU PAGE ANIMATIONS (called on page switch) ───
+// ─── MENU PAGE ANIMATIONS ───
 let menuAnimsInit = false;
 function initMenuAnimations() {
   if (menuAnimsInit) return;
   menuAnimsInit = true;
+  if (!window.Motion) return;
   const { animate, inView } = window.Motion;
 
   // Menu hero
   setTimeout(() => {
-    animate('#menu-hero-title', { opacity: [0, 1], y: [40, 0] }, { duration: 0.7, ease: 'easeOut' });
-    animate('#menu-hero-sub', { opacity: [0, 1], y: [20, 0] }, { duration: 0.55, delay: 0.3, ease: 'easeOut' });
-  }, 50);
+    animate('#menu-hero-title', { opacity: [0, 1], y: [48, 0] }, { duration: 0.75, ease: 'easeOut' });
+    animate('#menu-hero-sub',   { opacity: [0, 1], y: [24, 0] }, { duration: 0.6,  delay: 0.25, ease: 'easeOut' });
+  }, 60);
 
-  // Menu section headings
-  document.querySelectorAll('.menu-section-title').forEach(el => {
-    inView(el, () => {
-      animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 0.55, ease: 'easeOut' });
+  // Section labels + titles + descriptions
+  document.querySelectorAll('.menu-section').forEach(section => {
+    const label = section.querySelector('.menu-section-label');
+    const title = section.querySelector('.menu-section-title');
+    const desc  = section.querySelector('.menu-section-desc');
+    if (label) inView(label, () => {
+      animate(label, { opacity: [0, 1], y: [12, 0] }, { duration: 0.4, ease: 'easeOut' });
+    }, { margin: '-5% 0px' });
+    if (title) inView(title, () => {
+      animate(title, { opacity: [0, 1], y: [30, 0] }, { duration: 0.55, ease: 'easeOut' });
+    }, { margin: '-5% 0px' });
+    if (desc) inView(desc, () => {
+      animate(desc, { opacity: [0, 1], y: [16, 0] }, { duration: 0.45, delay: 0.1, ease: 'easeOut' });
     }, { margin: '-5% 0px' });
   });
 
-  // Menu cards — fade up in pairs
-  const cards = document.querySelectorAll('.menu-card');
-  cards.forEach((el, i) => {
+  // Menu cards — stagger by column (i % 3)
+  document.querySelectorAll('.menu-card').forEach((el, i) => {
     inView(el, () => {
-      animate(el, { opacity: [0, 1], y: [30, 0] }, { duration: 0.45, delay: (i % 2) * 0.1, ease: 'easeOut' });
-    }, { margin: '-5% 0px' });
+      animate(el, { opacity: [0, 1], y: [36, 0] }, { duration: 0.5, delay: (i % 3) * 0.1, ease: 'easeOut' });
+    }, { margin: '-4% 0px' });
   });
+
+  // CTA banner elements
+  inView('#menu-cta-banner', () => {
+    animate('.menu-cta-title', { opacity: [0, 1], y: [36, 0] }, { duration: 0.65, ease: 'easeOut' });
+    animate('.menu-cta-sub',   { opacity: [0, 1], y: [20, 0] }, { duration: 0.5,  delay: 0.18, ease: 'easeOut' });
+    animate('.menu-cta-btn',   { opacity: [0, 1], y: [16, 0] }, { duration: 0.45, delay: 0.34, ease: 'easeOut' });
+  }, { margin: '-10% 0px' });
 
   // CTA banner
   inView('#menu-cta-banner', () => {
