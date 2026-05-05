@@ -82,7 +82,7 @@ nav{
 /* ─── HERO ─── */
 .hero{
   position:relative;height:100vh;min-height:600px;
-  display:flex;align-items:center;justify-content:flex-start;
+  display:flex;align-items:center;justify-content:center;
   overflow:hidden;background:var(--dark);
 }
 .hero-bg{
@@ -95,7 +95,7 @@ nav{
   background:linear-gradient(160deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.52) 50%, rgba(0,0,0,0.70) 100%);
 }
 .hero-content{
-  position:relative;z-index:2;text-align:left;padding:0 32px;max-width:860px;margin-left:max(60px,7vw);
+  position:relative;z-index:2;text-align:center;padding:0 32px;max-width:980px;
 }
 .hero-eyebrow{
   display:inline-block;margin-bottom:28px;
@@ -1199,17 +1199,10 @@ function toggleMobile() {
 }
 
 // ─── ANIMATION HELPERS ───
-function preHide(selector, tx, ty) {
+function fadeUp(selector, delay) {
   document.querySelectorAll(selector).forEach(el => {
     el.style.opacity = '0';
-    el.style.transform = 'translate(' + (tx||0) + 'px,' + (ty||0) + 'px)';
-    el.style.willChange = 'opacity,transform';
-  });
-}
-function preHideScale(selector, s) {
-  document.querySelectorAll(selector).forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'scale(' + (s||0.93) + ')';
+    el.style.transform = 'translateY(32px)';
     el.style.willChange = 'opacity,transform';
   });
 }
@@ -1219,84 +1212,82 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!window.Motion) return;
   const { animate, inView } = window.Motion;
 
-  // Pre-hide every home scroll target so animations are visible
-  preHide('.dish-rotator',              0,  24);
-  preHide('#eat-img',                 -90,   0);
-  preHide('#eat-content',              90,   0);
-  preHide('#sip-content',            -90,   0);
-  preHide('#sip-img',                  90,   0);
-  preHide('.gallery-header',            0,  36);
-  preHide('#page-home .gallery-item',   0,  40);
-  preHideScale('#statement-title',   0.93);
-  preHide('.statement-sub',             0,  22);
-  preHide('.locations-header',          0,  32);
-  preHide('.loc-card',                  0,  28);
-  preHide('.email-title',               0,  36);
-  preHide('.email-sub',                 0,  24);
-  preHide('.email-form',                0,  24);
-  preHide('#page-home footer',          0,  28);
+  // Pre-hide scroll targets (opacity + translateY only — no x conflicts)
+  ['#eat-img','#eat-content','#sip-content','#sip-img'].forEach(s => fadeUp(s));
+  fadeUp('.dish-rotator');
+  fadeUp('.gallery-header');
+  fadeUp('#statement-title');
+  fadeUp('.statement-sub');
+  fadeUp('.locations-header');
+  fadeUp('.loc-card');
+  fadeUp('.email-title');
+  fadeUp('.email-sub');
+  fadeUp('.email-form');
+  fadeUp('#page-home footer');
+  document.querySelectorAll('#page-home .gallery-item').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(32px)';
+  });
 
-  // ── Hero (fires on load) ──
-  animate('#hero-eyebrow', { opacity: [0, 1], y: [18, 0] }, { duration: 0.5,  ease: 'easeOut' });
-  animate('#hero-title',   { opacity: [0, 1], y: [48, 0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
-  animate('#hero-sub',     { opacity: [0, 1], y: [28, 0] }, { duration: 0.65, delay: 0.38, ease: 'easeOut' });
-  animate('#hero-cta',     { opacity: [0, 1], y: [20, 0] }, { duration: 0.55, delay: 0.58, ease: 'easeOut' });
-  animate('#hero-badges',  { opacity: [0, 1], y: [16, 0] }, { duration: 0.5,  delay: 0.76, ease: 'easeOut' });
-  animate('#hero-title',   { opacity: [0, 1], y: [44, 0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
-  animate('#hero-sub',     { opacity: [0, 1], y: [28, 0] }, { duration: 0.6,  delay: 0.4,  ease: 'easeOut' });
-  animate('#hero-cta',     { opacity: [0, 1], y: [20, 0] }, { duration: 0.5,  delay: 0.62, ease: 'easeOut' });
-  animate('#hero-badges',  { opacity: [0, 1], y: [16, 0] }, { duration: 0.5,  delay: 0.82, ease: 'easeOut' });
+  // Safety fallback — reveal everything after 4 s if observers never fire
+  setTimeout(() => {
+    document.querySelectorAll('[style*="opacity: 0"]').forEach(el => {
+      el.style.opacity = ''; el.style.transform = '';
+    });
+  }, 4000);
+
+  // ── Hero (fires immediately on load) ──
+  animate('#hero-eyebrow', { opacity: [0,1], y: [20,0] }, { duration: 0.5,  ease: 'easeOut' });
+  animate('#hero-title',   { opacity: [0,1], y: [48,0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
+  animate('#hero-sub',     { opacity: [0,1], y: [28,0] }, { duration: 0.65, delay: 0.38, ease: 'easeOut' });
+  animate('#hero-cta',     { opacity: [0,1], y: [20,0] }, { duration: 0.55, delay: 0.58, ease: 'easeOut' });
+  animate('#hero-badges',  { opacity: [0,1], y: [16,0] }, { duration: 0.5,  delay: 0.76, ease: 'easeOut' });
 
   // ── Dish ticker ──
   inView('.dish-rotator', () =>
-    animate('.dish-rotator', { opacity: [0,1], y: [24,0] }, { duration: 0.7, ease: 'easeOut' })
+    animate('.dish-rotator', { opacity: [0,1], y: [32,0] }, { duration: 0.7, ease: 'easeOut' })
   );
 
-  // ── EAT — image slides from left, content from right ──
-  inView('#eat-img',     () => animate('#eat-img',     { opacity: [0,1], x: [-90,0] }, { duration: 0.9, ease: 'easeOut' }), { margin: '-6% 0px' });
-  inView('#eat-content', () => animate('#eat-content', { opacity: [0,1], x: [90,0]  }, { duration: 0.9, ease: 'easeOut' }), { margin: '-6% 0px' });
+  // ── EAT section ──
+  inView('#eat-img',     () => animate('#eat-img',     { opacity: [0,1], y: [32,0] }, { duration: 0.8, ease: 'easeOut' }));
+  inView('#eat-content', () => animate('#eat-content', { opacity: [0,1], y: [32,0] }, { duration: 0.8, delay: 0.15, ease: 'easeOut' }));
 
-  // ── SIP — content from left, image from right ──
-  inView('#sip-content', () => animate('#sip-content', { opacity: [0,1], x: [-90,0] }, { duration: 0.9, ease: 'easeOut' }), { margin: '-6% 0px' });
-  inView('#sip-img',     () => animate('#sip-img',     { opacity: [0,1], x: [90,0]  }, { duration: 0.9, ease: 'easeOut' }), { margin: '-6% 0px' });
+  // ── SIP section ──
+  inView('#sip-content', () => animate('#sip-content', { opacity: [0,1], y: [32,0] }, { duration: 0.8, ease: 'easeOut' }));
+  inView('#sip-img',     () => animate('#sip-img',     { opacity: [0,1], y: [32,0] }, { duration: 0.8, delay: 0.15, ease: 'easeOut' }));
 
   // ── Gallery header + items ──
   inView('.gallery-header', () =>
-    animate('.gallery-header', { opacity: [0,1], y: [36,0] }, { duration: 0.65, ease: 'easeOut' })
-  , { margin: '-5% 0px' });
-  document.querySelectorAll('#page-home .gallery-item').forEach((el, i) => {
-    inView(el, () =>
-      animate(el, { opacity: [0,1], y: [40,0] }, { duration: 0.55, delay: (i % 4) * 0.09, ease: 'easeOut' })
-    , { margin: '-4% 0px' });
-  });
+    animate('.gallery-header', { opacity: [0,1], y: [32,0] }, { duration: 0.65, ease: 'easeOut' })
+  );
+  document.querySelectorAll('#page-home .gallery-item').forEach((el, i) =>
+    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.55, delay: (i % 4) * 0.09, ease: 'easeOut' }))
+  );
 
   // ── Statement ──
   inView('#statement-section', () => {
-    animate('#statement-title', { opacity: [0,1], scale: [0.93,1] }, { duration: 0.85, ease: 'easeOut' });
-    animate('.statement-sub',   { opacity: [0,1], y: [22,0] },       { duration: 0.6,  delay: 0.28, ease: 'easeOut' });
-  }, { margin: '-10% 0px' });
+    animate('#statement-title', { opacity: [0,1], y: [32,0] }, { duration: 0.85, ease: 'easeOut' });
+    animate('.statement-sub',   { opacity: [0,1], y: [28,0] }, { duration: 0.6,  delay: 0.28, ease: 'easeOut' });
+  });
 
   // ── Locations ──
   inView('.locations-header', () =>
     animate('.locations-header', { opacity: [0,1], y: [32,0] }, { duration: 0.65, ease: 'easeOut' })
-  , { margin: '-5% 0px' });
-  document.querySelectorAll('.loc-card').forEach((el, i) => {
-    inView(el, () =>
-      animate(el, { opacity: [0,1], y: [28,0] }, { duration: 0.45, delay: i * 0.055, ease: 'easeOut' })
-    , { margin: '-5% 0px' });
-  });
+  );
+  document.querySelectorAll('.loc-card').forEach((el, i) =>
+    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.45, delay: i * 0.06, ease: 'easeOut' }))
+  );
 
-  // ── Email band — sequential reveal ──
+  // ── Email band ──
   inView('.email-band', () => {
-    animate('.email-title', { opacity: [0,1], y: [36,0] }, { duration: 0.65, ease: 'easeOut' });
-    animate('.email-sub',   { opacity: [0,1], y: [24,0] }, { duration: 0.55, delay: 0.16, ease: 'easeOut' });
+    animate('.email-title', { opacity: [0,1], y: [32,0] }, { duration: 0.65, ease: 'easeOut' });
+    animate('.email-sub',   { opacity: [0,1], y: [28,0] }, { duration: 0.55, delay: 0.16, ease: 'easeOut' });
     animate('.email-form',  { opacity: [0,1], y: [24,0] }, { duration: 0.55, delay: 0.32, ease: 'easeOut' });
-  }, { margin: '-10% 0px' });
+  });
 
   // ── Footer ──
   inView('#page-home footer', () =>
     animate('#page-home footer', { opacity: [0,1], y: [28,0] }, { duration: 0.7, ease: 'easeOut' })
-  , { margin: '-5% 0px' });
+  );
 });
 
 // ─── MENU PAGE ANIMATIONS ───
@@ -1308,50 +1299,50 @@ function initMenuAnimations() {
   const { animate, inView } = window.Motion;
 
   // Pre-hide all menu targets
-  preHide('.menu-section-label',  0, 16);
-  preHide('.menu-section-title',  0, 36);
-  preHide('.menu-section-desc',   0, 20);
-  preHide('.menu-card',           0, 44);
-  preHide('.menu-cta-title',      0, 40);
-  preHide('.menu-cta-sub',        0, 24);
-  preHide('.menu-cta-btn',        0, 20);
-  preHide('#page-menu footer',    0, 28);
+  ['.menu-section-label','.menu-section-title','.menu-section-desc',
+   '.menu-card','.menu-cta-title','.menu-cta-sub','.menu-cta-btn','#page-menu footer']
+    .forEach(s => fadeUp(s));
+
+  // Safety fallback
+  setTimeout(() => {
+    document.querySelectorAll('#page-menu [style*="opacity: 0"]').forEach(el => {
+      el.style.opacity = ''; el.style.transform = '';
+    });
+  }, 4000);
 
   // Menu hero
   setTimeout(() => {
-    animate('#menu-hero-title', { opacity: [0,1], y: [56,0] }, { duration: 0.8,  ease: 'easeOut' });
-    animate('#menu-hero-sub',   { opacity: [0,1], y: [28,0] }, { duration: 0.65, delay: 0.22, ease: 'easeOut' });
+    animate('#menu-hero-title', { opacity: [0,1], y: [48,0] }, { duration: 0.8,  ease: 'easeOut' });
+    animate('#menu-hero-sub',   { opacity: [0,1], y: [24,0] }, { duration: 0.65, delay: 0.22, ease: 'easeOut' });
   }, 80);
 
-  // Section labels → titles → descriptions (each fires individually)
+  // Section labels, titles, descriptions
   document.querySelectorAll('.menu-section-label').forEach(el =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [16,0] }, { duration: 0.4,  ease: 'easeOut' }), { margin: '-5% 0px' })
+    inView(el, () => animate(el, { opacity: [0,1], y: [20,0] }, { duration: 0.4, ease: 'easeOut' }))
   );
   document.querySelectorAll('.menu-section-title').forEach(el =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [36,0] }, { duration: 0.6,  ease: 'easeOut' }), { margin: '-5% 0px' })
+    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.6, ease: 'easeOut' }))
   );
   document.querySelectorAll('.menu-section-desc').forEach(el =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [20,0] }, { duration: 0.5,  delay: 0.1, ease: 'easeOut' }), { margin: '-5% 0px' })
+    inView(el, () => animate(el, { opacity: [0,1], y: [24,0] }, { duration: 0.5, delay: 0.1, ease: 'easeOut' }))
   );
 
-  // Menu cards — stagger by column position (i % 3 × 0.12s)
-  document.querySelectorAll('.menu-card').forEach((el, i) => {
-    inView(el, () =>
-      animate(el, { opacity: [0,1], y: [44,0] }, { duration: 0.55, delay: (i % 3) * 0.12, ease: 'easeOut' })
-    , { margin: '-4% 0px' });
-  });
+  // Menu cards — stagger by column
+  document.querySelectorAll('.menu-card').forEach((el, i) =>
+    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.5, delay: (i % 3) * 0.1, ease: 'easeOut' }))
+  );
 
-  // CTA banner — title → sub → button
+  // CTA banner
   inView('#menu-cta-banner', () => {
-    animate('.menu-cta-title', { opacity: [0,1], y: [40,0] }, { duration: 0.7,  ease: 'easeOut' });
+    animate('.menu-cta-title', { opacity: [0,1], y: [32,0] }, { duration: 0.7,  ease: 'easeOut' });
     animate('.menu-cta-sub',   { opacity: [0,1], y: [24,0] }, { duration: 0.55, delay: 0.2,  ease: 'easeOut' });
     animate('.menu-cta-btn',   { opacity: [0,1], y: [20,0] }, { duration: 0.5,  delay: 0.38, ease: 'easeOut' });
-  }, { margin: '-10% 0px' });
+  });
 
   // Menu footer
   inView('#page-menu footer', () =>
     animate('#page-menu footer', { opacity: [0,1], y: [28,0] }, { duration: 0.7, ease: 'easeOut' })
-  , { margin: '-5% 0px' });
+  );
 }
 </script>
 </body>
