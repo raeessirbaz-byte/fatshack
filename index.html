@@ -79,6 +79,10 @@ nav{
 .page{display:none}
 .page.active{display:block}
 
+/* ─── SCROLL ANIMATIONS ─── */
+.s-hide{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease}
+.s-hide.s-show{opacity:1;transform:translateY(0)}
+
 /* ─── HERO ─── */
 .hero{
   position:relative;height:100vh;min-height:600px;
@@ -1198,96 +1202,84 @@ function toggleMobile() {
   document.getElementById('mobile-menu').classList.toggle('open');
 }
 
-// ─── ANIMATION HELPERS ───
-function fadeUp(selector, delay) {
-  document.querySelectorAll(selector).forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(32px)';
-    el.style.willChange = 'opacity,transform';
+// ─── SCROLL ANIMATIONS (native IntersectionObserver — no Framer Motion dependency) ───
+function initScrollAnims(scope) {
+  const targets = [
+    { sel: '.dish-rotator' },
+    { sel: '#eat-img' },
+    { sel: '#eat-content', delay: 120 },
+    { sel: '#sip-content' },
+    { sel: '#sip-img', delay: 120 },
+    { sel: '.gallery-header' },
+    { sel: '.locations-header' },
+    { sel: '.email-title' },
+    { sel: '.email-sub', delay: 160 },
+    { sel: '.email-form', delay: 320 },
+    { sel: '#statement-title' },
+    { sel: '.statement-sub', delay: 280 },
+    { sel: (scope || document).querySelector ? null : null }
+  ];
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const delay = parseInt(el.dataset.sDelay || '0');
+      setTimeout(() => el.classList.add('s-show'), delay);
+      obs.unobserve(el);
+    });
+  }, { threshold: 0.12 });
+
+  const root = scope || document;
+
+  // Single-element targets
+  [
+    { sel: '.dish-rotator', delay: 0 },
+    { sel: '#eat-img',      delay: 0 },
+    { sel: '#eat-content',  delay: 120 },
+    { sel: '#sip-content',  delay: 0 },
+    { sel: '#sip-img',      delay: 120 },
+    { sel: '.gallery-header', delay: 0 },
+    { sel: '#statement-title', delay: 0 },
+    { sel: '.statement-sub',   delay: 280 },
+    { sel: '.locations-header', delay: 0 },
+    { sel: '.email-title',  delay: 0 },
+    { sel: '.email-sub',    delay: 160 },
+    { sel: '.email-form',   delay: 320 },
+    { sel: '#page-home footer', delay: 0 },
+    { sel: '#page-menu footer', delay: 0 },
+    { sel: '.menu-cta-title', delay: 0 },
+    { sel: '.menu-cta-sub',   delay: 200 },
+    { sel: '.menu-cta-btn',   delay: 380 },
+  ].forEach(({ sel, delay }) => {
+    root.querySelectorAll(sel).forEach(el => {
+      el.classList.add('s-hide');
+      el.dataset.sDelay = delay;
+      obs.observe(el);
+    });
+  });
+
+  // Staggered groups
+  root.querySelectorAll('.gallery-item, .loc-card, .menu-section-label, .menu-section-title, .menu-section-desc, .menu-card').forEach((el, i) => {
+    el.classList.add('s-hide');
+    el.dataset.sDelay = (i % 4) * 90;
+    obs.observe(el);
   });
 }
 
 // ─── HOME PAGE ANIMATIONS ───
 document.addEventListener('DOMContentLoaded', () => {
+  // Scroll animations — always run, no Framer Motion dependency
+  initScrollAnims();
+
+  // Hero entrance — Framer Motion only (enhances, not required for visibility)
   if (!window.Motion) return;
-  const { animate, inView } = window.Motion;
-
-  // Pre-hide scroll targets (opacity + translateY only — no x conflicts)
-  ['#eat-img','#eat-content','#sip-content','#sip-img'].forEach(s => fadeUp(s));
-  fadeUp('.dish-rotator');
-  fadeUp('.gallery-header');
-  fadeUp('#statement-title');
-  fadeUp('.statement-sub');
-  fadeUp('.locations-header');
-  fadeUp('.loc-card');
-  fadeUp('.email-title');
-  fadeUp('.email-sub');
-  fadeUp('.email-form');
-  fadeUp('#page-home footer');
-  document.querySelectorAll('#page-home .gallery-item').forEach(el => {
-    el.style.opacity = '0'; el.style.transform = 'translateY(32px)';
-  });
-
-  // Safety fallback — reveal everything after 4 s if observers never fire
-  setTimeout(() => {
-    document.querySelectorAll('[style*="opacity: 0"]').forEach(el => {
-      el.style.opacity = ''; el.style.transform = '';
-    });
-  }, 4000);
-
-  // ── Hero (fires immediately on load) ──
+  const { animate } = window.Motion;
   animate('#hero-eyebrow', { opacity: [0,1], y: [20,0] }, { duration: 0.5,  ease: 'easeOut' });
   animate('#hero-title',   { opacity: [0,1], y: [48,0] }, { duration: 0.75, delay: 0.15, ease: 'easeOut' });
   animate('#hero-sub',     { opacity: [0,1], y: [28,0] }, { duration: 0.65, delay: 0.38, ease: 'easeOut' });
   animate('#hero-cta',     { opacity: [0,1], y: [20,0] }, { duration: 0.55, delay: 0.58, ease: 'easeOut' });
   animate('#hero-badges',  { opacity: [0,1], y: [16,0] }, { duration: 0.5,  delay: 0.76, ease: 'easeOut' });
-
-  // ── Dish ticker ──
-  inView('.dish-rotator', () =>
-    animate('.dish-rotator', { opacity: [0,1], y: [32,0] }, { duration: 0.7, ease: 'easeOut' })
-  );
-
-  // ── EAT section ──
-  inView('#eat-img',     () => animate('#eat-img',     { opacity: [0,1], y: [32,0] }, { duration: 0.8, ease: 'easeOut' }));
-  inView('#eat-content', () => animate('#eat-content', { opacity: [0,1], y: [32,0] }, { duration: 0.8, delay: 0.15, ease: 'easeOut' }));
-
-  // ── SIP section ──
-  inView('#sip-content', () => animate('#sip-content', { opacity: [0,1], y: [32,0] }, { duration: 0.8, ease: 'easeOut' }));
-  inView('#sip-img',     () => animate('#sip-img',     { opacity: [0,1], y: [32,0] }, { duration: 0.8, delay: 0.15, ease: 'easeOut' }));
-
-  // ── Gallery header + items ──
-  inView('.gallery-header', () =>
-    animate('.gallery-header', { opacity: [0,1], y: [32,0] }, { duration: 0.65, ease: 'easeOut' })
-  );
-  document.querySelectorAll('#page-home .gallery-item').forEach((el, i) =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.55, delay: (i % 4) * 0.09, ease: 'easeOut' }))
-  );
-
-  // ── Statement ──
-  inView('#statement-section', () => {
-    animate('#statement-title', { opacity: [0,1], y: [32,0] }, { duration: 0.85, ease: 'easeOut' });
-    animate('.statement-sub',   { opacity: [0,1], y: [28,0] }, { duration: 0.6,  delay: 0.28, ease: 'easeOut' });
-  });
-
-  // ── Locations ──
-  inView('.locations-header', () =>
-    animate('.locations-header', { opacity: [0,1], y: [32,0] }, { duration: 0.65, ease: 'easeOut' })
-  );
-  document.querySelectorAll('.loc-card').forEach((el, i) =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.45, delay: i * 0.06, ease: 'easeOut' }))
-  );
-
-  // ── Email band ──
-  inView('.email-band', () => {
-    animate('.email-title', { opacity: [0,1], y: [32,0] }, { duration: 0.65, ease: 'easeOut' });
-    animate('.email-sub',   { opacity: [0,1], y: [28,0] }, { duration: 0.55, delay: 0.16, ease: 'easeOut' });
-    animate('.email-form',  { opacity: [0,1], y: [24,0] }, { duration: 0.55, delay: 0.32, ease: 'easeOut' });
-  });
-
-  // ── Footer ──
-  inView('#page-home footer', () =>
-    animate('#page-home footer', { opacity: [0,1], y: [28,0] }, { duration: 0.7, ease: 'easeOut' })
-  );
 });
 
 // ─── MENU PAGE ANIMATIONS ───
@@ -1295,54 +1287,16 @@ let menuAnimsInit = false;
 function initMenuAnimations() {
   if (menuAnimsInit) return;
   menuAnimsInit = true;
-  if (!window.Motion) return;
-  const { animate, inView } = window.Motion;
 
-  // Pre-hide all menu targets
-  ['.menu-section-label','.menu-section-title','.menu-section-desc',
-   '.menu-card','.menu-cta-title','.menu-cta-sub','.menu-cta-btn','#page-menu footer']
-    .forEach(s => fadeUp(s));
-
-  // Safety fallback
-  setTimeout(() => {
-    document.querySelectorAll('#page-menu [style*="opacity: 0"]').forEach(el => {
-      el.style.opacity = ''; el.style.transform = '';
-    });
-  }, 4000);
-
-  // Menu hero
-  setTimeout(() => {
-    animate('#menu-hero-title', { opacity: [0,1], y: [48,0] }, { duration: 0.8,  ease: 'easeOut' });
-    animate('#menu-hero-sub',   { opacity: [0,1], y: [24,0] }, { duration: 0.65, delay: 0.22, ease: 'easeOut' });
-  }, 80);
-
-  // Section labels, titles, descriptions
-  document.querySelectorAll('.menu-section-label').forEach(el =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [20,0] }, { duration: 0.4, ease: 'easeOut' }))
-  );
-  document.querySelectorAll('.menu-section-title').forEach(el =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.6, ease: 'easeOut' }))
-  );
-  document.querySelectorAll('.menu-section-desc').forEach(el =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [24,0] }, { duration: 0.5, delay: 0.1, ease: 'easeOut' }))
-  );
-
-  // Menu cards — stagger by column
-  document.querySelectorAll('.menu-card').forEach((el, i) =>
-    inView(el, () => animate(el, { opacity: [0,1], y: [32,0] }, { duration: 0.5, delay: (i % 3) * 0.1, ease: 'easeOut' }))
-  );
-
-  // CTA banner
-  inView('#menu-cta-banner', () => {
-    animate('.menu-cta-title', { opacity: [0,1], y: [32,0] }, { duration: 0.7,  ease: 'easeOut' });
-    animate('.menu-cta-sub',   { opacity: [0,1], y: [24,0] }, { duration: 0.55, delay: 0.2,  ease: 'easeOut' });
-    animate('.menu-cta-btn',   { opacity: [0,1], y: [20,0] }, { duration: 0.5,  delay: 0.38, ease: 'easeOut' });
-  });
-
-  // Menu footer
-  inView('#page-menu footer', () =>
-    animate('#page-menu footer', { opacity: [0,1], y: [28,0] }, { duration: 0.7, ease: 'easeOut' })
-  );
+  // Menu hero via Framer Motion if available
+  if (window.Motion) {
+    const { animate } = window.Motion;
+    setTimeout(() => {
+      animate('#menu-hero-title', { opacity: [0,1], y: [48,0] }, { duration: 0.8,  ease: 'easeOut' });
+      animate('#menu-hero-sub',   { opacity: [0,1], y: [24,0] }, { duration: 0.65, delay: 0.22, ease: 'easeOut' });
+    }, 80);
+  }
+  // Scroll animations already set up by initScrollAnims() on DOMContentLoaded
 }
 </script>
 </body>
